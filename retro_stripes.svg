@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 900" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="15" dy="15" stdDeviation="15" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <style>
+      .line { fill: none; stroke-width: 30; stroke-linecap: round; }
+      .purple { stroke: #5a00ff; }
+      .pink { stroke: #ff007f; }
+      .orange { stroke: #ff5e00; }
+      .yellow { stroke: #ffc800; }
+      .shadow { filter: url(#shadow); }
+    </style>
+  </defs>
+  
+  <!-- S-shape (Snaking layer) -->
+  <g class="shadow">
+    <path class="line purple" d="M 2000 100 L 480 100 A 150 150 0 0 0 480 400 A 150 150 0 0 1 480 700 L -1000 700" />
+    <path class="line pink"   d="M 2000 130 L 480 130 A 120 120 0 0 0 480 370 A 180 180 0 0 1 480 730 L -1000 730" />
+    <path class="line orange" d="M 2000 160 L 480 160 A 90 90 0 0 0 480 340 A 210 210 0 0 1 480 760 L -1000 760" />
+    <path class="line yellow" d="M 2000 190 L 480 190 A 60 60 0 0 0 480 310 A 240 240 0 0 1 480 790 L -1000 790" />
+  </g>
+</svg>

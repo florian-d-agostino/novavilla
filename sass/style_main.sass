@@ -1,0 +1,535 @@
+@use "sass:color"
+
+
+
+
+// ======================= COLORS =======================
+$color-dark-blue: #121128
+$color-deep-dark-blue: #050415
+$color-yellow: #FFD319
+$color-orange: #FF901F
+$color-pink: #FF2975
+$color-green: #17FF62
+$color-purple: #290d27ff
+$color-violet: #B000FF
+$color-element-grey: #d4d4d4
+
+// ======================= FONTS =======================
+@font-face
+    font-family: 'Maqui'
+    src: url('../assets/fonts/Maqui.otf') format('opentype')
+    font-weight: normal
+    font-style: normal
+
+$font-family: 'Maqui'
+
+
+
+
+// ======================= LAYOUT =======================
+$app-width: 400px
+
+
+
+
+
+// ======================= FUNCTIONS =======================
+@function stars($n)
+    $value: '#{random(2000)}px #{random(2000)}px #FFF'
+    @for $i from 2 through $n
+        $value: '#{$value}, #{random(2000)}px #{random(2000)}px #FFF'
+    @return unquote($value)
+
+// ======================= GLOBAL =======================
+
+    box-sizing: border-box
+    margin: 0
+    padding: 0
+
+html, body
+    width: 100%
+    overflow-x: hidden
+    margin: 0
+    padding: 0
+
+body
+    background: url('../retro_stripes.svg') no-repeat center / 150% fixed, radial-gradient(circle, $color-dark-blue, $color-deep-dark-blue)
+    font-family: $font-family
+    display: flex
+    flex-direction: column
+    align-items: center
+    min-height: 100vh
+    position: relative
+
+    &::before
+        content: ""
+        position: fixed
+        top: 0
+        left: 0
+        width: 1px
+        height: 1px
+        background: transparent
+        box-shadow: stars(300)
+        z-index: -2
+        opacity: 0.5
+        pointer-events: none // Évite toute interaction parasite
+
+// ======================= HEADER =======================
+.top-header
+    width: 100%
+    max-width: $app-width
+    position: relative
+    background-color: $color-violet
+    height: 80px
+    display: flex
+    align-items: center
+    padding: 0 20px
+
+    &::after
+        content: ""
+        width: 120px
+        flex-shrink: 0
+
+    .logo-container
+        width: 120px
+        height: 60px
+        padding: 5px
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-shrink: 0
+        overflow: visible
+        transform: rotate(-15deg) translateY(8px) translateX(-15px)
+
+        img
+            width: 100%
+            height: 100%
+            object-fit: contain
+            filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.5))
+
+    .header-title
+        flex: 1
+        text-align: center
+        color: #ffffff
+        font-size: 1.4rem
+        font-weight: normal
+        text-transform: uppercase
+        letter-spacing: 2px
+
+    .header-curve
+        position: absolute
+        bottom: -25px
+        left: 0
+        background-color: $color-violet
+        width: 100%
+        height: 50px
+        border-radius: 0 0 50% 50%
+        z-index: -1
+
+    .menu-icon
+        position: fixed
+        z-index: 100
+        top: 20px
+        right: 20px
+        width: 60px
+        height: 60px
+        background-color: $color-violet
+        border-radius: 50%
+        display: flex
+        justify-content: center
+        align-items: center
+        color: #ffffff
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3)
+        cursor: pointer
+        transition: transform 0.2s ease, background-color 0.2s ease
+
+        &:hover
+            transform: scale(1.1)
+            background-color: color.adjust($color-violet, $lightness: 5%)
+
+        i
+            font-size: 24px
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1)
+
+// ======================= MAIN CONTAINER =======================
+.main-container
+    width: 100%
+    max-width: $app-width
+    flex: 1
+    min-height: 600px
+    display: flex
+    flex-direction: column
+    padding: 40px 20px 20px 20px
+    gap: 20px
+
+    .button-categories
+        width: 110px
+        height: 30px
+        background-color: $color-yellow
+        border-radius: 15px
+        display: flex
+        justify-content: center
+        align-items: center
+        color: $color-dark-blue
+        font-size: 0.85rem
+        font-weight: bold
+        cursor: pointer
+        transition: transform 0.2s ease
+
+        &:hover
+            transform: scale(1.05)
+
+    .action-bar
+        display: flex
+        gap: 10px
+
+        .input-container
+            flex: 1
+            display: flex
+            align-items: center
+            
+            .date-input
+                width: 100%
+                height: 45px
+                background-color: $color-violet
+                border-radius: 8px
+                padding: 0 15px
+                display: flex
+                align-items: center
+                justify-content: center
+                color: #ffffff
+                font-size: 0.9rem
+                position: relative
+                
+                .arrow-btn
+                    position: absolute
+                    right: 15px
+                    background: none
+                    border: none
+                    font-size: 20px
+                    color: #fff
+                    cursor: pointer
+                    display: flex
+                    align-items: center
+
+        .calendar-btn
+            width: 45px
+            height: 45px
+            border: none
+            background-color: $color-yellow
+            border-radius: 8px
+            font-size: 20px
+            color: $color-dark-blue
+            cursor: pointer
+            display: flex
+            justify-content: center
+            align-items: center
+
+    // ---------------- SWIPER / CAROUSEL ----------------
+    .switcher
+        display: flex
+        align-items: center
+        justify-content: space-between
+        gap: 15px
+        padding: 10px 0
+
+        .switcher-left, .switcher-right
+            width: 35px
+            height: 35px
+            background-color: $color-yellow
+            border-radius: 50%
+            display: flex
+            justify-content: center
+            align-items: center
+            color: #000
+            cursor: pointer
+            transition: all 0.2s ease
+            z-index: 10
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2)
+            
+            &:hover
+                background-color: color.adjust($color-yellow, $lightness: -5%)
+                transform: scale(1.1)
+
+            &.disabled
+                opacity: 0.3
+                cursor: default
+                pointer-events: none
+
+        .cards-viewport
+            flex: 1
+            overflow: hidden
+            position: relative
+            height: 180px
+            border-radius: 12px
+
+        .cards-container
+            display: flex
+            height: 100%
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)
+
+        .main-card
+            min-width: 100%
+            height: 100%
+            background-color: $color-purple
+            display: flex
+            flex-direction: column
+            overflow: hidden
+            border-radius: 12px
+
+            .card-header
+                height: 35px
+                background-color: $color-yellow
+                display: flex
+                justify-content: center
+                align-items: center
+                color: $color-dark-blue
+                font-size: 1rem
+                font-weight: bold
+            
+            .card-body
+                flex: 1
+                overflow: hidden
+                img
+                    max-width: 100%
+                    height: auto
+                    display: block
+
+            .card-footer
+                height: 35px
+                background-color: $color-yellow
+                display: flex
+                justify-content: space-between
+                align-items: center
+                padding: 0 10px
+                color: $color-dark-blue
+                font-size: 0.7rem
+                
+                .button-booking
+                    width: 85px
+                    height: 22px
+                    background-color: $color-violet
+                    border-radius: 11px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    color: #ffffff
+                    font-size: 0.65rem
+                    cursor: pointer
+
+    // ---------------- MAP SECTION ----------------
+    .title-map
+        width: 120px
+        height: 30px
+        background-color: $color-yellow
+        border-radius: 14px
+        display: flex
+        justify-content: center
+        align-items: center
+        color: $color-dark-blue
+        font-size: 0.85rem
+        text-transform: uppercase
+        letter-spacing: 1px
+        margin: 0 auto
+
+    .map-container
+        border: 2px solid $color-element-grey
+        border-radius: 15px
+        overflow: hidden
+        margin-bottom: 30px
+        background-color: #fff
+        border: solid red 3px
+        
+        .map-view
+            height: 250px 
+            position: relative
+
+            #map
+                width: 100%
+                height: 100%
+
+        .map-popup
+            display: none
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            width: 80%
+            max-width: 300px
+            background-color: white
+            border-radius: 15px
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3)
+            z-index: 1000
+            padding: 20px
+
+            &.active
+                display: block
+
+            .popup-content
+                position: relative
+                text-align: center
+
+                h3
+                    color: $color-dark-blue
+                    margin-bottom: 10px
+                    font-size: 1.2rem
+
+                p
+                    color: #666
+                    font-size: 0.9rem
+                    margin-bottom: 15px
+
+                .popup-btn
+                    background-color: $color-violet
+                    color: white
+                    border: none
+                    padding: 8px 20px
+                    border-radius: 20px
+                    cursor: pointer
+                    font-family: $font-family
+
+                .close-popup
+                    position: absolute
+                    top: -10px
+                    right: -10px
+                    font-size: 24px
+                    cursor: pointer
+                    color: $color-pink
+
+        .map-legend
+            padding: 12px
+            background-color: #666
+            display: flex
+            justify-content: space-between
+
+            .legend-col
+                display: flex
+                flex-direction: column
+                gap: 8px
+
+                .legend-item
+                    display: flex
+                    align-items: center
+                    gap: 10px
+                    color: #ffffff
+                    font-size: 0.75rem
+                    font-weight: normal
+
+                    .color-box
+                        width: 14px
+                        height: 14px
+                        border-radius: 2px
+                        flex-shrink: 0
+                        &.green
+                            background-color: $color-green
+                        &.red
+                            background-color: $color-pink
+                        &.yellow
+                            background-color: $color-yellow
+                        &.blue
+                            background-color: $color-violet
+
+                    .line
+                        width: 30px
+                        height: 4px
+                        background-color: rgba(255, 255, 255, 0.3)
+                        border-radius: 2px
+                        flex-shrink: 0
+
+// ======================= FOOTER / BOTTOM NAV =======================
+.bottom-nav
+    width: 100%
+    max-width: $app-width
+    background-color: $color-violet
+    position: relative
+    height: 80px
+    display: flex
+    justify-content: center
+    align-items: center
+
+    .footer-curved
+        position: absolute
+        top: -20px
+        left: 0
+        width: 100%
+        height: 40px
+        background-color: $color-violet
+        border-radius: 50% 50% 0 0
+        z-index: 1
+
+    .nav-items-container
+        z-index: 2
+        display: flex
+        gap: 20px
+        
+        .nav-item
+            display: flex
+            flex-direction: column
+            gap: 5px
+            
+            .nav-bar
+                width: 40px
+                height: 8px
+                background-color: $color-purple
+                border-radius: 4px
+
+// ======================= BURGER MENU POPUP =======================
+.burger-overlay
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: rgba(18, 17, 40, 0.7)
+    backdrop-filter: blur(12px)
+    z-index: 1000
+    display: none
+    justify-content: center
+    align-items: center
+    opacity: 0
+    transition: opacity 0.3s ease
+
+    &.active
+        display: flex
+        opacity: 1
+
+    .menu-content
+        position: relative
+        width: 80%
+        max-width: 300px
+        background: rgba(176, 0, 255, 0.1)
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        border-radius: 30px
+        padding: 40px 20px
+        text-align: center
+        box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.3), -20px -20px 60px rgba(255, 255, 255, 0.05)
+
+        .close-menu
+            position: absolute
+            top: 20px
+            right: 25px
+            font-size: 30px
+            color: $color-pink
+            cursor: pointer
+            line-height: 1
+
+        .menu-nav
+            display: flex
+            flex-direction: column
+            gap: 20px
+
+            .menu-link
+                text-decoration: none
+                color: #ffffff
+                font-size: 1.5rem
+                font-weight: bold
+                padding: 15px
+                border-radius: 15px
+                transition: all 0.3s ease
+                background: transparent
+                
+                &:hover
+                    background: rgba(176, 0, 255, 0.3)
+                    box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.2), inset -6px -6px 12px rgba(255, 255, 255, 0.1)
+                    transform: translateY(-2px)
+                    color: $color-yellow
