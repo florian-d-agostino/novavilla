@@ -7,7 +7,7 @@
     <title>VillaNova</title>
 
     <link rel="stylesheet" href="../sass/style_main.css">
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -41,15 +41,26 @@
     <main class="main-container">
 
 
-        <div class="button-categories">Catégories</div>
+        <div class="categories-wrapper">
+            <div class="button-categories" id="categories-btn">Catégories</div>
+            <div class="categories-menu" id="categories-menu">
+                <div class="category-option" data-category="Tous">Tous</div>
+                <div class="category-option" data-category="Sportif">Sportif</div>
+                <div class="category-option" data-category="Concert">Concert</div>
+                <div class="category-option" data-category="Famille">Famille</div>
+                <div class="category-option" data-category="Festival">Festival</div>
+            </div>
+        </div>
 
 
 
         <section class="action-bar">
-            <div class="input-container">
-                <div class="date-input">29 Avril 2026
-                    <button class="arrow-btn"><i class="fa-solid fa-circle-arrow-right"></i></button>
+            <div class="date-input-container">
+                <button class="arrow-btn-prev"><i class="fa-solid fa-circle-arrow-left"></i></button>
+                <div class="date-display">
+                    <span id="date-text">29 Avril 2026</span>
                 </div>
+                <button class="arrow-btn-next"><i class="fa-solid fa-circle-arrow-right"></i></button>
             </div>
             <button class="calendar-btn">
                 <i class="fa-regular fa-calendar"></i>
@@ -100,13 +111,24 @@
 
 
 
-            <!-- Popup  (en attente)-->
+            <!-- Popup Map (Design Figma) -->
             <div id="custom-popup" class="map-popup">
-                <div class="popup-content">
+                <div class="popup-container">
                     <span class="close-popup">&times;</span>
-                    <h3 id="popup-title">Titre de l'activité</h3>
-                    <p id="popup-desc">Description de l'activité...</p>
-                    <button class="popup-btn">En savoir plus</button>
+                    
+                    <div class="popup-header">
+                        <h3 id="popup-title">Festival des Arts</h3>
+                        <div class="popup-date-badge" id="popup-date">29 Avril</div>
+                    </div>
+
+                    <div class="popup-body">
+                        <img id="popup-img" src="../assets/event_placeholder.jpg" alt="Event">
+                    </div>
+
+                    <div class="popup-footer">
+                        <div class="popup-address" id="popup-address">127 Blvd Taschereau, Marseille</div>
+                        <button class="popup-reserve-btn">Reservation</button>
+                    </div>
                 </div>
             </div>
 
@@ -145,23 +167,22 @@
         <div class="footer-curved"></div>
 
         <div class="nav-items-container">
-
-
-            <!-- Item  -->
-            <div class="nav-item">
-                <div class="nav-bar top-bar"></div>
-                <div class="nav-bar bottom-bar"></div>
-            </div>
-
-            <div class="nav-item">
-                <div class="nav-bar top-bar"></div>
-                <div class="nav-bar bottom-bar"></div>
-            </div>
-
-            <div class="nav-item">
-                <div class="nav-bar top-bar"></div>
-                <div class="nav-bar bottom-bar"></div>
-            </div>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-newspaper"></i>
+                <span>News</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa-solid fa-star"></i>
+                <span>Événements</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-handshake"></i>
+                <span>Partenaires</span>
+            </a>
         </div>
     </footer>
 
@@ -181,16 +202,29 @@
         </div>
     </div>
 
-    <!-- Scripts Google Maps JS -->
-    <script>
-        (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Re-using existing usage.") : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
-            key: "", // <======= Clé API à mettre ici
-            v: "weekly",
-        });
-    </script>
+    <!-- Calendar Modal -->
+    <div id="calendar-modal" class="calendar-overlay">
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button id="prev-month"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 id="current-month-year">Avril 2026</h2>
+                <button id="next-month"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="calendar-weekdays">
+                <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
+            </div>
+            <div id="calendar-days" class="calendar-days">
+                <!-- Days will be generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="../js/map.js"></script>
     <script src="../js/switcher.js"></script>
     <script src="../js/menu.js"></script>
+    <script src="../js/calendar.js"></script>
 </body>
 
 </html>
