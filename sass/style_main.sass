@@ -1,8 +1,5 @@
 @use "sass:color"
 
-
-
-
 // ======================= COLORS =======================
 $color-dark-blue: #121128
 $color-deep-dark-blue: #050415
@@ -15,23 +12,12 @@ $color-violet: #B000FF
 $color-element-grey: #d4d4d4
 
 // ======================= FONTS =======================
-@font-face
-    font-family: 'Maqui'
-    src: url('../assets/fonts/Maqui.otf') format('opentype')
-    font-weight: normal
-    font-style: normal
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap')
 
-$font-family: 'Maqui'
-
-
-
+$font-family: 'Outfit', sans-serif
 
 // ======================= LAYOUT =======================
 $app-width: 400px
-
-
-
-
 
 // ======================= FUNCTIONS =======================
 @function stars($n)
@@ -72,7 +58,7 @@ body
         box-shadow: stars(300)
         z-index: -2
         opacity: 0.5
-        pointer-events: none // Évite toute interaction parasite
+        pointer-events: none
 
 // ======================= HEADER =======================
 .top-header
@@ -80,15 +66,91 @@ body
     max-width: $app-width
     position: relative
     background-color: $color-deep-dark-blue
-    height: 80px
+    height: 110px
     display: flex
     align-items: center
     padding: 0 20px
 
-    &::after
-        content: ""
-        width: 120px
-        flex-shrink: 0
+    .theme-toggle-container
+        position: absolute
+        bottom: 12px
+        left: 50%
+        transform: translateX(-50%)
+        width: auto
+        display: flex
+        justify-content: center
+        align-items: center
+        z-index: 10
+
+        .theme-switch
+            position: relative
+            display: inline-block
+            width: 48px
+            height: 24px
+            cursor: pointer
+
+            input
+                opacity: 0
+                width: 0
+                height: 0
+
+            .slider
+                position: absolute
+                top: 0
+                left: 0
+                right: 0
+                bottom: 0
+                background-color: #1a1936
+                border: 2px solid #290d27
+                border-radius: 34px
+                transition: all 0.3s ease
+                display: flex
+                align-items: center
+                justify-content: space-between
+                padding: 0 4px
+
+                &::before
+                    content: ""
+                    position: absolute
+                    height: 16px
+                    width: 16px
+                    left: 2px
+                    bottom: 2px
+                    background-color: $color-yellow
+                    border-radius: 50%
+                    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)
+                    box-shadow: 0 0 8px $color-yellow
+                    z-index: 2
+
+                .slider-icon
+                    font-size: 8px
+                    color: rgba(255, 255, 255, 0.4)
+                    transition: all 0.3s ease
+                    display: flex
+                    align-items: center
+                    justify-content: center
+
+                    &.sun
+                        order: 1
+                        margin-left: 1px
+                    &.moon
+                        order: 2
+                        margin-right: 1px
+                        color: $color-yellow
+
+            input:checked + .slider
+                background-color: #e2e8f0
+                border-color: #cbd5e1
+
+                &::before
+                    transform: translateX(24px)
+                    background-color: $color-violet
+                    box-shadow: 0 0 8px rgba(176, 0, 255, 0.6)
+
+                .slider-icon.sun
+                    color: $color-violet
+                .slider-icon.moon
+                    color: rgba(0, 0, 0, 0.2)
 
     .logo-container
         width: 120px
@@ -108,13 +170,15 @@ body
             filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.5))
 
     .header-title
-        flex: 1
-        text-align: center
+        position: absolute
+        left: 50%
+        transform: translateX(-50%)
         color: #ffffff
         font-size: 1.4rem
         font-weight: normal
         text-transform: uppercase
         letter-spacing: 2px
+        margin-top: -20px
 
     .header-curve
         position: absolute
@@ -151,6 +215,9 @@ body
             font-size: 24px
             text-shadow: 0 2px 4px rgba(0,0,0,0.1)
 
+    .desktop-nav
+        display: none
+
 // ======================= MAIN CONTAINER =======================
 .main-container
     width: 100%
@@ -164,22 +231,26 @@ body
 
     .categories-wrapper
         position: relative
-        width: 110px
+        width: fit-content
+        min-width: 150px
+        margin-bottom: 15px
 
         .button-categories
             width: 100%
-            height: 30px
+            height: 40px
             background-color: $color-yellow
-            border-radius: 15px
+            border-radius: 20px
             display: flex
             justify-content: center
             align-items: center
             color: $color-dark-blue
-            font-size: 0.85rem
+            font-size: 0.95rem
             font-weight: bold
             cursor: pointer
             transition: all 0.2s ease
             z-index: 10
+            padding: 0 25px
+            box-sizing: border-box
 
             &:hover
                 transform: scale(1.05)
@@ -187,9 +258,10 @@ body
 
         .categories-menu
             position: absolute
-            top: 40px
+            top: 50px
             left: 0
-            width: 150px
+            width: 100%
+            min-width: 150px
             background-color: $color-deep-dark-blue
             border: 1px solid $color-yellow
             border-radius: 12px
@@ -221,7 +293,6 @@ body
                     background-color: $color-yellow
                     color: $color-dark-blue
                     font-weight: bold
-
 
     .action-bar
         display: flex
@@ -272,7 +343,6 @@ body
             transition: transform 0.2s ease
             &:hover
                 transform: scale(1.05)
-
 
     // ---------------- SWIPER / CAROUSEL ----------------
     .switcher
@@ -387,12 +457,11 @@ body
         overflow: hidden
         margin-bottom: 30px
         background-color: #fff
-        border: solid red 3px
         
         .map-view
             height: 250px 
             position: relative
-            z-index: 1 // Lower z-index for the map
+            z-index: 1
 
         .map-popup
             display: none
@@ -406,13 +475,11 @@ body
             box-shadow: 0 10px 40px rgba(0,0,0,0.6)
             z-index: 1000
             overflow: hidden
-            border: 1px solid rgba(255, 255, 255, 0.2) // Subtle white border
-            padding: 8px // Space to show the radial gradient border
+            border: 1px solid rgba(255, 255, 255, 0.2) 
+            padding: 8px 
 
             &.active
                 display: block
-
-
 
             .popup-container
                 position: relative
@@ -430,7 +497,7 @@ body
 
                 .popup-header
                     height: 40px
-                    background-color: $color-deep-dark-blue // Black theme
+                    background-color: $color-deep-dark-blue
                     display: flex
                     justify-content: space-between
                     align-items: center
@@ -443,7 +510,7 @@ body
                         font-weight: bold
 
                     .popup-date-badge
-                        background-color: $color-yellow // Yellow contrast
+                        background-color: $color-yellow
                         color: $color-dark-blue
                         padding: 2px 8px
                         border-radius: 4px
@@ -467,7 +534,7 @@ body
 
                 .popup-footer
                     height: 50px
-                    background-color: $color-purple // Purple theme from cards
+                    background-color: $color-purple
                     display: flex
                     justify-content: space-between
                     align-items: center
@@ -480,7 +547,7 @@ body
                         line-height: 1.2
 
                     .popup-reserve-btn
-                        background-color: $color-yellow // Yellow for action
+                        background-color: $color-yellow
                         color: $color-dark-blue
                         border: none
                         padding: 5px 12px
@@ -492,8 +559,6 @@ body
                         transition: transform 0.2s ease
                         &:hover
                             transform: scale(1.05)
-
-
 
         .map-legend
             padding: 12px
@@ -731,7 +796,6 @@ body
                 cursor: pointer
                 border-radius: 5px
                 transition: all 0.2s ease
-
                 &:hover
                     background-color: rgba(255, 255, 255, 0.1)
                     color: $color-yellow
@@ -750,3 +814,1095 @@ body
                     &:hover
                         background: none
 
+// ======================= RESPONSIVE DESKTOP =======================
+@media (min-width: 1024px)
+
+    .top-header
+        max-width: 1200px
+        padding: 0 40px
+        height: 80px
+
+        .header-title
+            margin-top: 0
+            position: absolute
+            left: 45%
+            transform: translateX(-50%)
+        
+        .menu-icon
+            display: none
+
+        .theme-toggle-container
+            position: static
+            transform: none
+            margin-left: auto
+            margin-right: 40px
+
+        .desktop-nav
+            display: flex
+            gap: 30px
+            align-items: center
+            
+            .nav-link
+                text-decoration: none
+                color: #fff
+                font-size: 1rem
+                text-transform: uppercase
+                letter-spacing: 1px
+                transition: color 0.2s ease
+                
+                &:hover, &.active
+                    color: $color-yellow
+                    font-weight: bold
+
+    .bottom-nav
+        display: none
+
+    .main-container
+        max-width: 1200px
+        flex-direction: row 
+        justify-content: space-between
+        align-items: flex-start
+        gap: 40px
+        padding: 40px
+
+        &.events-page-container, &.news-page-container, &.partners-page-container
+            flex-direction: column
+            align-items: stretch
+            gap: 20px
+
+            .switcher
+                max-width: 600px
+                width: 100%
+                margin: 0 auto
+        
+        .desktop-left
+            flex: 0 0 45% 
+            display: flex
+            flex-direction: column
+            gap: 20px
+
+        .desktop-right
+            flex: 1 
+            display: flex
+            flex-direction: column
+            height: 600px 
+            
+            .title-map
+                margin: 0 0 10px 0
+                
+            .map-container
+                height: 100%
+                display: flex
+                flex-direction: column
+                
+                .map-view
+                    flex: 1 
+                    height: auto
+
+// ======================= EVENTS PAGE STYLES =======================
+.events-top-controls
+    display: flex
+    flex-direction: column
+    gap: 15px
+    width: 100%
+    align-items: center
+    margin-bottom: 25px
+
+    .categories-wrapper
+        width: 100%
+        display: flex
+        justify-content: center
+
+@media (min-width: 1024px)
+    .events-top-controls
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        max-width: 1200px
+        margin: 0 auto 30px auto
+
+        .categories-wrapper
+            width: auto
+            justify-content: flex-start
+
+.all-events-divider
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 15px
+    margin: 40px auto 25px auto
+    width: 100%
+    max-width: 1200px
+
+    .divider-line
+        flex: 1
+        height: 1px
+        background: linear-gradient(90deg, transparent, $color-pink, transparent)
+
+    h2
+        font-family: $font-family
+        color: #fff
+        font-size: 1.2rem
+        text-transform: uppercase
+        letter-spacing: 2px
+        text-shadow: 0 0 10px $color-pink
+        text-align: center
+
+.all-events-grid
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))
+    gap: 25px
+    width: 100%
+    max-width: 1200px
+    margin: 0 auto 40px auto
+    padding: 0 10px
+
+@media (min-width: 1024px)
+    .all-events-grid
+        padding: 0
+
+.event-grid-card
+    background-color: #171630
+    border-radius: 15px
+    overflow: hidden
+    position: relative
+    display: flex
+    flex-direction: column
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease
+    border: 2px solid transparent
+
+    &.sportif
+        box-shadow: 0 4px 15px rgba(23, 255, 98, 0.05)
+        border-color: rgba(23, 255, 98, 0.15)
+        &:hover
+            box-shadow: 0 8px 25px rgba(23, 255, 98, 0.35)
+            border-color: rgba(23, 255, 98, 0.6)
+
+    &.concert
+        box-shadow: 0 4px 15px rgba(255, 41, 117, 0.05)
+        border-color: rgba(255, 41, 117, 0.15)
+        &:hover
+            box-shadow: 0 8px 25px rgba(255, 41, 117, 0.35)
+            border-color: rgba(255, 41, 117, 0.6)
+
+    &.famille
+        box-shadow: 0 4px 15px rgba(255, 211, 25, 0.05)
+        border-color: rgba(255, 211, 25, 0.15)
+        &:hover
+            box-shadow: 0 8px 25px rgba(255, 211, 25, 0.35)
+            border-color: rgba(255, 211, 25, 0.6)
+
+    &.festival
+        box-shadow: 0 4px 15px rgba(176, 0, 255, 0.05)
+        border-color: rgba(176, 0, 255, 0.15)
+        &:hover
+            box-shadow: 0 8px 25px rgba(176, 0, 255, 0.35)
+            border-color: rgba(176, 0, 255, 0.6)
+
+    .grid-card-img-wrapper
+        height: 160px
+        width: 100%
+        overflow: hidden
+        position: relative
+
+        img
+            width: 100%
+            height: 100%
+            object-fit: cover
+            transition: transform 0.5s ease
+
+        &:hover img
+            transform: scale(1.08)
+
+        .category-badge
+            position: absolute
+            top: 12px
+            right: 12px
+            padding: 4px 10px
+            border-radius: 20px
+            font-size: 0.65rem
+            font-weight: bold
+            text-transform: uppercase
+            color: #fff
+
+            &.sportif
+                background-color: $color-green
+                box-shadow: 0 0 10px $color-green
+
+            &.concert
+                background-color: $color-pink
+                box-shadow: 0 0 10px $color-pink
+
+            &.famille
+                background-color: $color-yellow
+                color: #121128
+                box-shadow: 0 0 10px $color-yellow
+
+            &.festival
+                background-color: $color-violet
+                box-shadow: 0 0 10px $color-violet
+
+    .grid-card-content
+        padding: 20px
+        display: flex
+        flex-direction: column
+        flex-grow: 1
+        gap: 15px
+
+        .grid-card-title
+            font-family: $font-family
+            font-size: 1.1rem
+            color: #fff
+            margin: 0
+            line-height: 1.3
+
+        .grid-card-meta
+            display: flex
+            flex-direction: column
+            gap: 8px
+
+            p
+                font-size: 0.75rem
+                color: #d4d4d4
+                display: flex
+                align-items: center
+                gap: 6px
+                margin: 0
+
+                i
+                    color: $color-pink
+                    width: 14px
+
+        .button-booking
+            width: 100%
+            padding: 10px 0
+            border-radius: 8px
+            border: none
+            outline: none
+            background-color: $color-violet
+            color: #fff
+            font-family: $font-family
+            font-size: 0.9rem
+            font-weight: bold
+            cursor: pointer
+            transition: background-color 0.2s ease, transform 0.2s
+            align-self: flex-end
+            margin-top: auto
+            text-align: center
+
+            &:hover
+                background-color: darken($color-violet, 10%)
+                transform: scale(1.02)
+
+.empty-grid-message
+    grid-column: 1 / -1
+    text-align: center
+    padding: 40px 20px
+    font-size: 0.9rem
+    color: #d4d4d4
+
+@keyframes fadeIn
+    from
+        opacity: 0
+        transform: translateY(10px)
+    to
+        opacity: 1
+        transform: translateY(0)
+
+.fade-in
+    animation: fadeIn 0.4s ease forwards
+
+// ======================= NEWS PAGE STYLES =======================
+.news-categories-section
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 12px
+    width: 100%
+    max-width: 1200px
+    margin: 0 auto 20px auto
+
+    .news-section-title
+        font-family: $font-family
+        font-size: 0.85rem
+        text-transform: uppercase
+        color: rgba(255, 255, 255, 0.6)
+        letter-spacing: 1px
+        margin: 0
+
+.news-categories
+    display: flex
+    flex-wrap: wrap
+    justify-content: center
+    gap: 12px
+    width: 100%
+
+    .category-checkbox-pill
+        display: inline-flex
+        align-items: center
+        gap: 8px
+        padding: 8px 16px
+        border-radius: 20px
+        border: 2px solid transparent
+        cursor: pointer
+        transition: all 0.25s ease
+        user-select: none
+        font-size: 0.85rem
+        font-weight: bold
+        background-color: rgba(255, 255, 255, 0.05)
+        border-color: rgba(255, 255, 255, 0.15)
+        color: rgba(255, 255, 255, 0.6)
+
+        input[type="checkbox"]
+            display: none
+
+        .pill-check
+            display: inline-flex
+            align-items: center
+            justify-content: center
+            width: 14px
+            height: 14px
+            border-radius: 3px
+            border: 1.5px solid rgba(255, 255, 255, 0.4)
+            font-size: 0.65rem
+            color: transparent
+            transition: all 0.2s
+
+        &.sportif:has(input:checked)
+            background-color: rgba(23, 255, 98, 0.12)
+            border-color: $color-green
+            color: #fff
+            box-shadow: 0 0 10px rgba(23, 255, 98, 0.3)
+            .pill-check
+                background-color: $color-green
+                border-color: $color-green
+                color: #121128
+
+        &.concert:has(input:checked)
+            background-color: rgba(255, 41, 117, 0.12)
+            border-color: $color-pink
+            color: #fff
+            box-shadow: 0 0 10px rgba(255, 41, 117, 0.3)
+            .pill-check
+                background-color: $color-pink
+                border-color: $color-pink
+                color: #fff
+
+        &.famille:has(input:checked)
+            background-color: rgba(255, 211, 25, 0.12)
+            border-color: $color-yellow
+            color: #fff
+            box-shadow: 0 0 10px rgba(255, 211, 25, 0.3)
+            .pill-check
+                background-color: $color-yellow
+                border-color: $color-yellow
+                color: #121128
+
+        &.festival:has(input:checked)
+            background-color: rgba(176, 0, 255, 0.12)
+            border-color: $color-violet
+            color: #fff
+            box-shadow: 0 0 10px rgba(176, 0, 255, 0.3)
+            .pill-check
+                background-color: $color-violet
+                border-color: $color-violet
+                color: #fff
+
+.news-grid
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))
+    gap: 25px
+    width: 100%
+    max-width: 1200px
+    margin: 0 auto
+    padding: 10px 10px 40px 10px
+    box-sizing: border-box
+
+@media (min-width: 1024px)
+    .news-grid
+        padding: 10px 0 40px 0
+
+.news-card
+    background-color: #171630
+    border-radius: 15px
+    overflow: hidden
+    display: flex
+    flex-direction: column
+    border: 1px solid rgba(255, 255, 255, 0.05)
+    transition: transform 0.3s ease, box-shadow 0.3s ease
+
+    &:hover
+        transform: translateY(-5px)
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4)
+
+    .news-card-img-wrapper
+        height: 180px
+        width: 100%
+        overflow: hidden
+        position: relative
+
+        img
+            width: 100%
+            height: 100%
+            object-fit: cover
+            transition: transform 0.5s ease
+
+        &:hover img
+            transform: scale(1.08)
+
+        .category-badge
+            position: absolute
+            top: 12px
+            right: 12px
+            padding: 4px 10px
+            border-radius: 20px
+            font-size: 0.65rem
+            font-weight: bold
+            text-transform: uppercase
+            color: #fff
+
+            &.sportif
+                background-color: $color-green
+                box-shadow: 0 0 10px $color-green
+
+            &.concert
+                background-color: $color-pink
+                box-shadow: 0 0 10px $color-pink
+
+            &.famille
+                background-color: $color-yellow
+                color: #121128
+                box-shadow: 0 0 10px $color-yellow
+
+            &.festival
+                background-color: $color-violet
+                box-shadow: 0 0 10px $color-violet
+
+    .news-card-content
+        padding: 20px
+        display: flex
+        flex-direction: column
+        flex-grow: 1
+        gap: 12px
+
+        .news-card-meta
+            display: flex
+            justify-content: space-between
+            align-items: center
+            font-size: 0.75rem
+            color: #a0aec0
+
+            i
+                color: $color-pink
+                margin-right: 4px
+
+        .news-card-title
+            font-family: $font-family
+            font-size: 1.15rem
+            color: #fff
+            margin: 0
+            line-height: 1.3
+
+        .news-card-desc
+            font-size: 0.85rem
+            color: #cbd5e0
+            line-height: 1.5
+            margin: 0
+
+        .news-card-btn
+            align-self: flex-start
+            color: $color-yellow
+            font-weight: bold
+            cursor: pointer
+            transition: color 0.2s, transform 0.2s
+            font-size: 0.85rem
+            border: none
+            background: none
+            padding: 0
+            display: flex
+            align-items: center
+            gap: 6px
+            font-family: $font-family
+
+            &:hover
+                color: darken($color-yellow, 10%)
+                transform: translateX(3px)
+
+.newsletter-section
+    background: linear-gradient(135deg, rgba(23, 22, 48, 0.9) 0%, rgba(35, 12, 57, 0.9) 100%)
+    padding: 35px 25px
+    border-radius: 15px
+    border: 1.5px solid rgba(176, 0, 255, 0.25)
+    box-shadow: 0 0 20px rgba(176, 0, 255, 0.15)
+    margin: 40px auto
+    text-align: center
+    max-width: 600px
+    width: 100%
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 15px
+
+    .newsletter-title
+        font-family: $font-family
+        font-size: 1.3rem
+        color: #fff
+        margin: 0
+        text-transform: uppercase
+        text-shadow: 0 0 10px $color-violet
+
+    .newsletter-desc
+        font-size: 0.8rem
+        color: #cbd5e0
+        line-height: 1.4
+        margin: 0
+        max-width: 500px
+
+    .newsletter-form
+        display: flex
+        flex-direction: column
+        gap: 12px
+        width: 100%
+        max-width: 480px
+        margin-top: 10px
+
+    .newsletter-input
+        flex: 1
+        padding: 12px 20px
+        border-radius: 25px
+        border: 1.5px solid rgba(255, 255, 255, 0.15)
+        background-color: rgba(255, 255, 255, 0.05)
+        color: #fff
+        font-size: 0.9rem
+        transition: border-color 0.2s, background-color 0.2s
+
+        &:focus
+            border-color: $color-yellow
+            outline: none
+            background-color: rgba(255, 255, 255, 0.1)
+
+    .newsletter-btn
+        padding: 12px 30px
+        border-radius: 25px
+        border: none
+        background-color: $color-yellow
+        color: $color-dark-blue
+        font-weight: bold
+        font-family: $font-family
+        font-size: 0.9rem
+        cursor: pointer
+        transition: transform 0.2s, background-color 0.2s
+
+        &:hover
+            transform: scale(1.02)
+            background-color: darken($color-yellow, 5%)
+
+    .unsubscribe-trigger-btn
+        margin-top: 10px
+        background-color: transparent
+        border: 1.5px solid #FF2975
+        color: #FF2975
+        font-family: $font-family
+        padding: 10px 25px
+        border-radius: 25px
+        font-weight: bold
+        cursor: pointer
+        transition: all 0.2s
+        font-size: 0.85rem
+
+        &:hover
+            background-color: #FF2975
+            color: #fff
+            box-shadow: 0 0 15px rgba(255, 41, 117, 0.4)
+
+@media (min-width: 768px)
+    .newsletter-section
+        .newsletter-form
+            flex-direction: row
+
+.empty-news-message
+    grid-column: 1 / -1
+    text-align: center
+    padding: 60px 20px
+    font-size: 0.9rem
+    color: #cbd5e0
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 10px
+
+    i
+        color: $color-pink
+
+// ======================= PARTNERS PAGE STYLES =======================
+.partners-page-container
+    &.main-container
+        align-items: center
+
+.partners-frame
+    background-color: rgba(23, 22, 48, 0.7)
+    border: 1.5px solid rgba(176, 0, 255, 0.25)
+    border-radius: 15px
+    padding: 25px 15px
+    display: flex
+    flex-direction: column
+    gap: 30px
+    max-width: 600px
+    width: 100%
+    margin: 0 auto 40px auto
+    box-sizing: border-box
+    box-shadow: 0 0 20px rgba(176, 0, 255, 0.1)
+
+    @media (min-width: 1024px)
+        max-width: 1200px
+        display: grid
+        grid-template-columns: repeat(2, 1fr)
+        gap: 40px 30px
+        padding: 40px 30px
+
+    .partner-item
+        display: flex
+        flex-direction: column
+        width: 100%
+        transition: transform 0.3s ease
+
+        &:hover
+            transform: translateY(-3px)
+
+    .partner-card
+        background-color: #ffffff
+        color: #121128
+        border-radius: 8px
+        padding: 15px
+        display: flex
+        justify-content: space-between
+        align-items: center
+        width: 90%
+        box-sizing: border-box
+        font-weight: bold
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15)
+        border: 1px solid rgba(255, 255, 255, 0.1)
+        z-index: 2
+
+        .partner-logo
+            display: flex
+            align-items: center
+            gap: 10px
+            font-family: $font-family
+            font-size: 0.95rem
+
+        .partner-tag
+            font-size: 0.7rem
+            padding: 3px 8px
+            border-radius: 12px
+            font-weight: bold
+            text-transform: uppercase
+
+            &.tag-concert
+                background-color: rgba(255, 41, 117, 0.1)
+                color: $color-pink
+                border: 1px solid rgba(255, 41, 117, 0.3)
+
+            &.tag-sportif
+                background-color: rgba(23, 255, 98, 0.1)
+                color: $color-green
+                border: 1px solid rgba(23, 255, 98, 0.3)
+
+            &.tag-famille
+                background-color: rgba(255, 211, 25, 0.1)
+                color: $color-yellow
+                border: 1px solid rgba(255, 211, 25, 0.3)
+
+            &.tag-festival
+                background-color: rgba(176, 0, 255, 0.1)
+                color: $color-violet
+                border: 1px solid rgba(176, 0, 255, 0.3)
+
+    .partner-action
+        background-color: #3b2054
+        color: #fff
+        border-radius: 8px
+        padding: 12px 15px
+        display: flex
+        justify-content: space-between
+        align-items: center
+        width: 90%
+        box-sizing: border-box
+        align-self: flex-end
+        margin-top: -8px
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25)
+        font-size: 0.8rem
+        z-index: 1
+
+        .action-text
+            font-size: 0.8rem
+            color: rgba(255, 255, 255, 0.8)
+
+        .action-btn
+            background-color: $color-yellow
+            color: $color-dark-blue
+            text-decoration: none
+            padding: 6px 12px
+            border-radius: 15px
+            font-weight: bold
+            font-size: 0.75rem
+            display: inline-flex
+            align-items: center
+            gap: 5px
+            transition: all 0.2s
+
+            &:hover
+                background-color: darken($color-yellow, 5%)
+
+// ======================= LIGHT THEME OVERRIDES =======================
+body:has(#theme-checkbox:checked)
+    background: radial-gradient(circle, #FFF5FA 0%, #E8E2F7 100%)
+    color: #121128
+
+    &::before
+        opacity: 0.1
+        filter: invert(1)
+
+    .top-header
+        background-color: #E2DAF5
+        box-shadow: none
+
+        .header-title
+            color: #121128
+
+        .header-curve
+            background-color: #E2DAF5
+
+        .desktop-nav
+            .nav-link
+                color: #290D27
+
+                &:hover, &.active
+                    color: $color-pink
+
+    .main-container
+        .categories-wrapper
+            .categories-menu
+                background-color: #ffffff
+                border-color: $color-violet
+                box-shadow: 0 8px 30px rgba(176, 0, 255, 0.1)
+
+                .category-option
+                    color: #121128
+                    border-bottom: 1px solid rgba(18, 17, 40, 0.1)
+
+                    &:hover
+                        background-color: rgba(176, 0, 255, 0.1)
+                        color: $color-violet
+
+                    &.selected
+                        background-color: $color-violet
+                        color: #ffffff
+
+        .main-card
+            background-color: #ffffff
+            border: 1px solid rgba(176, 0, 255, 0.15)
+            box-shadow: 0 8px 32px rgba(176, 0, 255, 0.06)
+
+            .card-body
+                background-color: #f8fafc
+
+        .title-map
+            background-color: $color-violet
+            color: #ffffff
+
+        .map-container
+            border-color: rgba(176, 0, 255, 0.2)
+            box-shadow: 0 8px 30px rgba(176, 0, 255, 0.05)
+
+            .map-legend
+                background-color: #ffffff
+                border-top: 1px solid rgba(176, 0, 255, 0.1)
+
+                .legend-item
+                    color: #121128
+
+                    .line
+                        background-color: rgba(18, 17, 40, 0.1)
+
+    .bottom-nav
+        background-color: #E2DAF5
+        box-shadow: none
+
+        .footer-curved
+            background-color: #E2DAF5
+
+        .nav-items-container
+            .nav-item
+                color: #121128
+                opacity: 0.6
+
+                &:hover, &.active
+                    color: $color-violet
+                    opacity: 1
+
+                &.active i
+                    filter: drop-shadow(0 0 8px rgba(176, 0, 255, 0.3))
+
+    .calendar-overlay
+        .calendar-container
+            background-color: #ffffff
+            border-color: $color-violet
+            box-shadow: 0 10px 40px rgba(176, 0, 255, 0.2)
+
+            .calendar-header
+                h2
+                    color: #121128
+
+            .calendar-days
+                .day
+                    color: #121128
+
+                    &:hover
+                        background-color: rgba(176, 0, 255, 0.1)
+                        color: $color-violet
+
+                    &.today
+                        border-color: $color-violet
+                        color: $color-violet
+
+                    &.selected
+                        background-color: $color-violet
+                        color: #ffffff
+                        box-shadow: 0 0 10px rgba(176, 0, 255, 0.4)
+
+    .burger-overlay
+        background-color: rgba(255, 255, 255, 0.8)
+        
+        .menu-content
+            background: rgba(255, 255, 255, 0.9)
+            border-color: rgba(176, 0, 255, 0.2)
+            box-shadow: 0 20px 50px rgba(176, 0, 255, 0.1)
+
+            .menu-nav
+                .menu-link
+                    color: #121128
+
+                    &:hover
+                        background: rgba(176, 0, 255, 0.1)
+                        color: $color-violet
+
+    .all-events-divider
+        h2
+            color: #121128
+            text-shadow: none
+        .divider-line
+            background: linear-gradient(90deg, transparent, $color-pink, transparent)
+
+    .event-grid-card
+        background-color: #ffffff
+        border: 1px solid rgba(176, 0, 255, 0.15)
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05)
+
+        &.sportif
+            background-color: #F0FDF4
+            border-color: rgba(23, 255, 98, 0.3)
+            &:hover
+                box-shadow: 0 8px 25px rgba(23, 255, 98, 0.2)
+                border-color: $color-green
+
+        &.concert
+            background-color: #FFF1F2
+            border-color: rgba(255, 41, 117, 0.3)
+            &:hover
+                box-shadow: 0 8px 25px rgba(255, 41, 117, 0.2)
+                border-color: $color-pink
+
+        &.famille
+            background-color: #FEFCE8
+            border-color: rgba(255, 211, 25, 0.3)
+            &:hover
+                box-shadow: 0 8px 25px rgba(255, 211, 25, 0.2)
+                border-color: $color-yellow
+
+        &.festival
+            background-color: #FAF5FF
+            border-color: rgba(176, 0, 255, 0.3)
+            &:hover
+                box-shadow: 0 8px 25px rgba(176, 0, 255, 0.2)
+                border-color: $color-violet
+
+        .grid-card-content
+            .grid-card-title
+                color: #121128
+            .grid-card-meta
+                p
+                    color: #4a5568
+                    i
+                        color: $color-pink
+
+        .grid-card-img-wrapper
+            .category-badge
+                &.sportif
+                    background-color: $color-green
+                    color: #121128
+                    box-shadow: none
+                &.concert
+                    background-color: $color-pink
+                    color: #fff
+                    box-shadow: none
+                &.famille
+                    background-color: $color-yellow
+                    color: #121128
+                    box-shadow: none
+                &.festival
+                    background-color: $color-violet
+                    color: #fff
+                    box-shadow: none
+
+    .empty-grid-message
+        color: #121128
+
+    .news-categories-section
+        .news-section-title
+            color: rgba(18, 17, 40, 0.6)
+
+    .category-checkbox-pill
+        background-color: rgba(18, 17, 40, 0.03)
+        border-color: rgba(18, 17, 40, 0.1)
+        color: rgba(18, 17, 40, 0.6)
+
+        .pill-check
+            border-color: rgba(18, 17, 40, 0.3)
+
+        &.sportif:has(input:checked)
+            background-color: #F0FDF4
+            border-color: $color-green
+            color: #121128
+            box-shadow: none
+            .pill-check
+                background-color: $color-green
+                border-color: $color-green
+                color: #121128
+
+        &.concert:has(input:checked)
+            background-color: #FFF1F2
+            border-color: $color-pink
+            color: #121128
+            box-shadow: none
+            .pill-check
+                background-color: $color-pink
+                border-color: $color-pink
+                color: #fff
+
+        &.famille:has(input:checked)
+            background-color: #FEFCE8
+            border-color: $color-yellow
+            color: #121128
+            box-shadow: none
+            .pill-check
+                background-color: $color-yellow
+                border-color: $color-yellow
+                color: #121128
+
+        &.festival:has(input:checked)
+            background-color: #FAF5FF
+            border-color: $color-violet
+            color: #121128
+            box-shadow: none
+            .pill-check
+                background-color: $color-violet
+                border-color: $color-violet
+                color: #fff
+
+    .news-card
+        background-color: #ffffff
+        border: 1px solid rgba(176, 0, 255, 0.12)
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05)
+
+        .news-card-content
+            .news-card-title
+                color: #121128
+            .news-card-desc
+                color: #4a5568
+            .news-card-meta
+                color: #718096
+                i
+                    color: $color-pink
+            .news-card-btn
+                color: $color-violet
+                &:hover
+                    color: darken($color-violet, 10%)
+
+        .news-card-img-wrapper
+            .category-badge
+                &.sportif
+                    background-color: $color-green
+                    color: #121128
+                    box-shadow: none
+                &.concert
+                    background-color: $color-pink
+                    color: #fff
+                    box-shadow: none
+                &.famille
+                    background-color: $color-yellow
+                    color: #121128
+                    box-shadow: none
+                &.festival
+                    background-color: $color-violet
+                    color: #fff
+                    box-shadow: none
+
+    .newsletter-section
+        background: linear-gradient(135deg, #ffffff 0%, #FAF5FF 100%)
+        border-color: rgba(176, 0, 255, 0.2)
+        box-shadow: 0 10px 30px rgba(176, 0, 255, 0.05)
+
+        .newsletter-title
+            color: #121128
+            text-shadow: none
+        .newsletter-desc
+            color: #4a5568
+        .newsletter-input
+            border-color: rgba(18, 17, 40, 0.15)
+            background-color: #fff
+            color: #121128
+            &:focus
+                border-color: $color-violet
+        .newsletter-btn
+            background-color: $color-violet
+            color: #fff
+            &:hover
+                background-color: darken($color-violet, 10%)
+        .unsubscribe-trigger-btn
+            border-color: #FF2975
+            color: #FF2975
+            &:hover
+                background-color: #FF2975
+                color: #fff
+
+    .empty-news-message
+        color: #121128
+
+    // Partners Page Light Theme overrides
+    .partners-frame
+        background-color: rgba(255, 255, 255, 0.9)
+        border-color: rgba(176, 0, 255, 0.2)
+        box-shadow: 0 10px 30px rgba(176, 0, 255, 0.05)
+
+        .partner-card
+            background-color: #ffffff
+            color: #121128
+            border: 1px solid rgba(176, 0, 255, 0.15)
+            box-shadow: 0 4px 15px rgba(176, 0, 255, 0.08)
+
+        .partner-action
+            background-color: #E2DAF5
+            color: #121128
+            box-shadow: 0 4px 15px rgba(176, 0, 255, 0.05)
+
+            .action-text
+                color: rgba(18, 17, 40, 0.8)
+
+            .action-btn
+                background-color: $color-violet
+                color: #fff
+
+                &:hover
+                    background-color: darken($color-violet, 10%)

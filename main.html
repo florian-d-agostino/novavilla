@@ -13,10 +13,7 @@
 
 <body>
 
-
-
-
-    <!-- ================= HEADER ================= -->
+    <!-- HEADER -->
     <header class="top-header">
         <div class="logo-container">
             <img src="../assets/NovaVilla.svg" alt="Logo NovaVilla">
@@ -24,180 +21,174 @@
 
         <h1 class="header-title">Nova Villa</h1>
 
+        <div class="theme-toggle-container">
+            <label class="theme-switch" for="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox">
+                <span class="slider">
+                    <span class="slider-icon sun"><i class="fa-solid fa-sun"></i></span>
+                    <span class="slider-icon moon"><i class="fa-solid fa-moon"></i></span>
+                </span>
+            </label>
+        </div>
+
         <div class="header-curve"></div>
 
-
+        <nav class="desktop-nav">
+            <a href="./main.html" class="nav-link active">Accueil</a>
+            <a href="./html/news.html" class="nav-link">News</a>
+            <a href="./html/event.html" class="nav-link">Événements</a>
+            <a href="./html/partner.html" class="nav-link">Partenaires</a>
+        </nav>
         <div class="menu-icon">
             <i class="fa-solid fa-bars fa-2x"></i>
         </div>
     </header>
 
+    <!-- INTRO CONTENT DIVIDER -->
+    <div class="all-events-divider" style="margin: 20px auto 0 auto; max-width: 1200px; padding: 0 20px; box-sizing: border-box;">
+        <span class="divider-line"></span>
+        <h2>Découvrir la Villa</h2>
+        <span class="divider-line"></span>
+    </div>
 
-
-
-
-
-    <!-- ================= MAIN CONTENT ================= -->
+    <!-- MAIN CONTENT -->
     <main class="main-container">
-
-
-        <div class="categories-wrapper">
-            <div class="button-categories" id="categories-btn">Catégories</div>
-            <div class="categories-menu" id="categories-menu">
-                <div class="category-option" data-category="Tous">Tous</div>
-                <div class="category-option" data-category="Sportif">Sportif</div>
-                <div class="category-option" data-category="Concert">Concert</div>
-                <div class="category-option" data-category="Famille">Famille</div>
-                <div class="category-option" data-category="Festival">Festival</div>
+        
+        <div class="desktop-left">
+            <div class="categories-wrapper">
+                <div class="button-categories" id="categories-btn">Catégories</div>
+                <div class="categories-menu" id="categories-menu">
+                    <div class="category-option" data-category="Tous">Tous</div>
+                    <div class="category-option" data-category="Sportif">Sportif</div>
+                    <div class="category-option" data-category="Concert">Concert</div>
+                    <div class="category-option" data-category="Famille">Famille</div>
+                    <div class="category-option" data-category="Festival">Festival</div>
+                </div>
             </div>
+
+            <section class="action-bar">
+                <div class="date-input-container">
+                    <button class="arrow-btn-prev"><i class="fa-solid fa-circle-arrow-left"></i></button>
+                    <div class="date-display">
+                        <span id="date-text">29 Avril 2026</span>
+                    </div>
+                    <button class="arrow-btn-next"><i class="fa-solid fa-circle-arrow-right"></i></button>
+                </div>
+                <button class="calendar-btn">
+                    <i class="fa-regular fa-calendar"></i>
+                </button>
+            </section>
+
+            <section class="switcher">
+                <div class="switcher-left" id="prev-event"><i class="fa-solid fa-chevron-left"></i></div>
+
+                <div class="cards-viewport">
+                    <div class="cards-container" id="events-container">
+                        <div class="main-card">
+                            <div class="card-header">Festival des Arts</div>
+                            <div class="card-body"></div>
+                            <div class="card-footer">
+                                127 Boulevard Taschereau, Marseille
+                                <div class="button-booking">Reservation</div>
+                            </div>
+                        </div>
+
+                        <div class="main-card">
+                            <div class="card-header">Soirée Jazz</div>
+                            <div class="card-body"></div>
+                            <div class="card-footer">
+                                Vieux Port, Marseille
+                                <div class="button-booking">Reservation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="switcher-right" id="next-event"><i class="fa-solid fa-chevron-right"></i></div>
+            </section>
         </div>
 
+        <div class="desktop-right">
+            <div class="title-map">Evénements</div>
+            <section class="map-container">
+                <div class="map-view" id="map"></div>
 
-
-        <section class="action-bar">
-            <div class="date-input-container">
-                <button class="arrow-btn-prev"><i class="fa-solid fa-circle-arrow-left"></i></button>
-                <div class="date-display">
-                    <span id="date-text">29 Avril 2026</span>
-                </div>
-                <button class="arrow-btn-next"><i class="fa-solid fa-circle-arrow-right"></i></button>
-            </div>
-            <button class="calendar-btn">
-                <i class="fa-regular fa-calendar"></i>
-            </button>
-        </section>
-
-
-        <section class="switcher">
-            <div class="switcher-left" id="prev-event"><i class="fa-solid fa-chevron-left"></i></div>
-
-            <div class="cards-viewport">
-                <div class="cards-container" id="events-container">
-
-
-                    <!-- evenement 1 (en attente)-->
-                    <div class="main-card">
-                        <div class="card-header">Festival des Arts</div>
-                        <div class="card-body"></div>
-                        <div class="card-footer">
-                            127 Boulevard Taschereau, Marseille
-                            <div class="button-booking">Reservation</div>
+                <div id="custom-popup" class="map-popup">
+                    <div class="popup-container">
+                        <span class="close-popup">&times;</span>
+                        
+                        <div class="popup-header">
+                            <h3 id="popup-title">Festival des Arts</h3>
+                            <div class="popup-date-badge" id="popup-date">29 Avril</div>
                         </div>
-                    </div>
 
+                        <div class="popup-body">
+                            <img id="popup-img" src="../assets/event_placeholder.jpg" alt="Event">
+                        </div>
 
-                    <!-- evenement 2 -->
-                    <div class="main-card">
-                        <div class="card-header">Soirée Jazz</div>
-                        <div class="card-body"></div>
-                        <div class="card-footer">
-                            Vieux Port, Marseille
-                            <div class="button-booking">Reservation</div>
+                        <div class="popup-footer">
+                            <div class="popup-address" id="popup-address">127 Blvd Taschereau, Marseille</div>
+                            <button class="popup-reserve-btn">Reservation</button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="switcher-right" id="next-event"><i class="fa-solid fa-chevron-right"></i></div>
-        </section>
+                <div class="map-legend">
+                    <div class="legend-col">
+                        <div class="legend-item">
+                            <span class="color-box green"></span>
+                            <div class="line"></div>Sportif
+                        </div>
 
-
-
-        <div class="title-map">Evénements</div>
-        <section class="map-container">
-
-            <div class="map-view" id="map"></div>
-
-
-
-
-            <!-- Popup Map (Design Figma) -->
-            <div id="custom-popup" class="map-popup">
-                <div class="popup-container">
-                    <span class="close-popup">&times;</span>
-                    
-                    <div class="popup-header">
-                        <h3 id="popup-title">Festival des Arts</h3>
-                        <div class="popup-date-badge" id="popup-date">29 Avril</div>
+                        <div class="legend-item">
+                            <span class="color-box red"></span>
+                            <div class="line"></div>Concert
+                        </div>
                     </div>
 
-                    <div class="popup-body">
-                        <img id="popup-img" src="../assets/event_placeholder.jpg" alt="Event">
-                    </div>
-
-                    <div class="popup-footer">
-                        <div class="popup-address" id="popup-address">127 Blvd Taschereau, Marseille</div>
-                        <button class="popup-reserve-btn">Reservation</button>
+                    <div class="legend-col">
+                        <div class="legend-item">Famille<div class="line"></div><span class="color-box yellow"></span></div>
+                        <div class="legend-item">Festival<div class="line"></div><span class="color-box blue"></span></div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="map-legend">
-                <div class="legend-col">
-                    <div class="legend-item"><span class="color-box green"></span>
-                        <div class="line"></div>Sportif
-                    </div>
-
-                    <div class="legend-item"><span class="color-box red"></span>
-                        <div class="line"></div>Concert
-                    </div>
-                </div>
-
-
-                <div class="legend-col">
-                    <div class="legend-item">Famille<div class="line"></div><span class="color-box yellow"></span></div>
-
-                    <div class="legend-item">Festival<div class="line"></div><span class="color-box blue"></span></div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
     </main>
 
-
-
-
-
-
-
-    <!-- ================= FOOTER / BOTTOM NAV ================= -->
+    <!-- FOOTER / BOTTOM NAV -->
     <footer class="bottom-nav">
-
         <div class="footer-curved"></div>
 
         <div class="nav-items-container">
-            <a href="#" class="nav-item">
+            <a href="./main.html" class="nav-item active">
                 <i class="fa-solid fa-house"></i>
                 <span>Accueil</span>
             </a>
-            <a href="#" class="nav-item">
+            <a href="./html/news.html" class="nav-item">
                 <i class="fa-solid fa-newspaper"></i>
                 <span>News</span>
             </a>
-            <a href="#" class="nav-item active">
+            <a href="./html/event.html" class="nav-item">
                 <i class="fa-solid fa-star"></i>
                 <span>Événements</span>
             </a>
-            <a href="#" class="nav-item">
+            <a href="./html/partner.html" class="nav-item">
                 <i class="fa-solid fa-handshake"></i>
                 <span>Partenaires</span>
             </a>
         </div>
     </footer>
 
-
-
-
-    <!-- Menu Burger Pop-up -->
+    <!-- Burger Menu Overlay -->
     <div id="burger-menu" class="burger-overlay">
         <div class="menu-content">
             <span class="close-menu">&times;</span>
             <nav class="menu-nav">
-                <a href="#" class="menu-link">Accueil</a>
-                <a href="#" class="menu-link">News</a>
-                <a href="#" class="menu-link">Événements</a>
-                <a href="#" class="menu-link">Partenaires</a>
+                <a href="./main.html" class="menu-link">Accueil</a>
+                <a href="./html/news.html" class="menu-link">News</a>
+                <a href="./html/event.html" class="menu-link">Événements</a>
+                <a href="./html/partner.html" class="menu-link">Partenaires</a>
             </nav>
         </div>
     </div>
@@ -214,12 +205,10 @@
                 <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
             </div>
             <div id="calendar-days" class="calendar-days">
-                <!-- Days will be generated by JS -->
             </div>
         </div>
     </div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="../js/map.js"></script>
     <script src="../js/switcher.js"></script>

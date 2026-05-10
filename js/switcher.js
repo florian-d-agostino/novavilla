@@ -6,56 +6,40 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentIndex = 0;
     let totalCards = 0;
 
-    // =========================================================================
-    // 🎓 CONFIGURATION DE L'API OPENAGENDA (Façon Étudiant)
-    // =========================================================================
-    // 💡 Astuce : Laisse ces valeurs vides pour utiliser tes cartes HTML par défaut.
-    // Dès que tu mets tes vraies infos, le site se connecte tout seul à OpenAgenda !
-    const OPENAGENDA_API_KEY = ""; // 🔑 Colle ta clé publique API OpenAgenda ici
-    const OPENAGENDA_UID = "";     // 📅 Colle l'identifiant unique (UID) de ton agenda ici (ex: "1234567")
+    const OPENAGENDA_API_KEY = "512a334322fe409fbbfb9da05c29440a";
+    const OPENAGENDA_UID = "4464467";  
 
-    // =========================================================================
-    // 🔄 LOGIQUE DE CHARGEMENT
-    // =========================================================================
+    // Initialize the application
     async function initApp() {
-        // Si les clés ne sont pas configurées, on utilise le HTML statique actuel
         if (!OPENAGENDA_API_KEY || !OPENAGENDA_UID) {
-            console.log("ℹ️ OpenAgenda non configuré. Utilisation des cartes HTML existantes.");
+            console.log("OpenAgenda not configured. Using existing HTML cards.");
             initFromHTML();
             return;
         }
 
-        console.log("🚀 Connexion à l'API OpenAgenda en cours...");
+        console.log("Connecting to OpenAgenda API...");
         await loadEventsFromOpenAgenda();
     }
 
-    // =========================================================================
-    // 📡 RÉCUPÉRATION DES DONNÉES (FETCH API)
-    // =========================================================================
     async function loadEventsFromOpenAgenda() {
-        // Construction de l'URL OpenAgenda API v2
-        // On demande la langue française ('monolingual=fr') et des détails complets ('detailed=1')
         const url = `https://api.openagenda.com/v2/agendas/${OPENAGENDA_UID}/events?key=${OPENAGENDA_API_KEY}&monolingual=fr&detailed=1`;
 
         try {
-            // ⚡ Fetch: On envoie la requête HTTP à l'API
             const response = await fetch(url);
             
             if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
+                throw new Error(`HTTP Error: ${response.status}`);
             }
 
             const data = await response.json();
-            
-            // Les événements d'OpenAgenda se trouvent généralement dans l'attribut 'events'
             const events = data.events || [];
             
             if (events.length === 0) {
                 container.innerHTML = `
-                    <div class="main-card" style="display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; color:#fff;">
+                    <div class="main-card" style="display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; color:inherit;">
                         <div>
-                            <h3>📅 Aucun événement</h3>
-                            <p style="font-size:0.8rem; margin-top:5px;">Ton agenda OpenAgenda est vide ou n'a pas d'événements à venir.</p>
+                            <h3>No events</h3>
+                            <p style="font-size:0.8rem; margin-top:5px;">Your OpenAgenda is empty or has no upcoming events.</p>
                         </div>
                     </div>
                 `;
@@ -63,17 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Génération des cartes avec les données récupérées !
             renderEvents(events);
 
         } catch (error) {
-            console.error("❌ Impossible de charger OpenAgenda:", error);
-            // En cas d'erreur de connexion ou de CORS, on affiche un message d'erreur sympa
+            console.error("Failed to load OpenAgenda:", error);
             container.innerHTML = `
-                <div class="main-card" style="display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; color:#fff;">
+                <div class="main-card" style="display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; color:inherit;">
                     <div>
-                        <h3 style="color:#FF2975;">⚠️ Erreur de connexion</h3>
-                        <p style="font-size:0.8rem; margin-top:5px;">Vérifie ta clé API, ton UID ou ta connexion Internet.</p>
+                        <h3 style="color:#FF2975;">Connection Error</h3>
+                        <p style="font-size:0.8rem; margin-top:5px;">Check your API key, UID, or internet connection.</p>
                     </div>
                 </div>
             `;
@@ -81,28 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // =========================================================================
-    // 🎨 INJECTION DANS LE DOM (Rendu des cartes)
-    // =========================================================================
     function renderEvents(events) {
-        container.innerHTML = ""; // On vide les cartes HTML temporaires
+        container.innerHTML = "";
         
-        // On limite par exemple à 5 événements max pour un carrousel fluide
         const eventsToDisplay = events.slice(0, 5);
         totalCards = eventsToDisplay.length;
 
         eventsToDisplay.forEach(event => {
-            // 🔍 Traitement des données pour éviter les bugs si un champ est manquant :
-            const title = event.title?.fr || event.title || "Événement sans titre";
-            const address = event.location?.name || event.location?.address || "Lieu non précisé";
-            
-            // Image : On cherche s'il y a une image d'OpenAgenda, sinon on met une image de secours (placeholder)
+            const title = event.title?.fr || event.title || "Untitled Event";
+            const address = event.location?.name || event.location?.address || "Location unspecified";
             const imageUrl = event.image?.square || event.image?.original || "../assets/map.png";
-            
-            // Lien de réservation : On cherche s'il y a un lien de billetterie, sinon on renvoie vers sa page OpenAgenda
-            const bookingUrl = event.registration?.[0]?.value || `https://openagenda.com/events/${event.slug}` || "#";
+            const bookingUrl = event.registration?.[0]?.value || `https://openagenda.com/villanova/events/${event.slug}` || "#";
 
-            // Création de la structure HTML de la carte
             const cardHTML = `
                 <div class="main-card">
                     <div class="card-header">${title}</div>
@@ -110,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <img src="${imageUrl}" alt="${title}" onerror="this.src='../assets/map.png';">
                     </div>
                     <div class="card-footer">
-                        <span>📍 ${address}</span>
+                        <span><i class="fa-solid fa-location-dot"></i> ${address}</span>
                         <div class="button-booking" onclick="window.open('${bookingUrl}', '_blank')">Reservation</div>
                     </div>
                 </div>
@@ -118,13 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
             container.insertAdjacentHTML("beforeend", cardHTML);
         });
 
-        // Activation de l'interactivité du carrousel
         initSwitcherControls();
     }
 
-    // =========================================================================
-    // 🎛️ LOGIQUE INTERACTIVE DU CARROUSEL (SWAP)
-    // =========================================================================
     function initFromHTML() {
         const cards = container.querySelectorAll(".main-card");
         totalCards = cards.length;
@@ -147,12 +115,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const offset = currentIndex * -100;
         container.style.transform = `translateX(${offset}%)`;
 
-        // Style désactivé si on est au bout du carrousel
         prevBtn.classList.toggle("disabled", currentIndex === 0);
         nextBtn.classList.toggle("disabled", currentIndex === totalCards - 1);
     }
 
-    // Clics sur les flèches
     prevBtn.addEventListener("click", () => {
         if (currentIndex > 0) {
             currentIndex--;
@@ -167,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Support tactile (Swipe)
     let touchStartX = 0;
     container.addEventListener("touchstart", e => touchStartX = e.changedTouches[0].screenX, { passive: true });
     container.addEventListener("touchend", e => {
@@ -181,6 +146,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, { passive: true });
 
-    // Initialisation globale au chargement de la page
     initApp();
 });

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fonction pour ouvrir le menu
     function openMenu() {
         overlay.classList.add("active");
-        document.body.style.overflow = "hidden"; // Empêche le scroll derrière
+        document.body.style.overflow = "hidden";
     }
 
     // Fonction pour fermer le menu
@@ -16,16 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = "auto";
     }
 
-    // Événements
     menuBtn.addEventListener("click", openMenu);
     closeBtn.addEventListener("click", closeMenu);
 
-    // Fermer si on clique sur un lien
     menuLinks.forEach(link => {
         link.addEventListener("click", closeMenu);
     });
 
-    // Fermer si on clique en dehors du contenu blanc
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) {
             closeMenu();

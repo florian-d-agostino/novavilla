@@ -1,18 +1,13 @@
-// On attend que la page soit prête
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- 1. CRÉATION DE LA CARTE ---
-    // On crée la carte et on la centre sur Marseille
     var maCarte = L.map('map').setView([43.2965, 5.3698], 13);
 
-    // On ajoute le fond de carte (le dessin de la carte)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap'
     }).addTo(maCarte);
 
-
     // --- 2. LES DONNÉES DES ÉVÉNEMENTS ---
-    // Un tableau simple avec nos activités fictives
     var listeEvenements = [
         {
             nom: "Festival des Arts",
@@ -52,40 +47,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
-
     // --- 3. GESTION DES MARQUEURS ---
     
-    // On crée un "groupe" pour ranger nos marqueurs (pratique pour tout effacer d'un coup)
     var groupeMarqueurs = L.layerGroup().addTo(maCarte);
 
-    // Fonction qui dessine les points sur la carte
     function afficherLesPoints(categorieChoisie) {
         
-        // On commence par vider la carte
         groupeMarqueurs.clearLayers();
 
-        // On parcourt tous nos événements
         for (var i = 0; i < listeEvenements.length; i++) {
             var event = listeEvenements[i];
 
-            // Si on veut TOUT voir OU si le type correspond à la catégorie choisie
             if (categorieChoisie === "Tous" || event.type === categorieChoisie) {
                 
-                // Création d'une icône de couleur
                 var iconeCouleur = L.divIcon({
                     className: 'marker-style',
                     html: '<div style="background-color:' + event.couleur + '; width:15px; height:15px; border-radius:50%; border:2px solid white; box-shadow:0 0 10px rgba(0,0,0,0.3);"></div>',
                     iconSize: [15, 15]
                 });
 
-                // On crée le marqueur
                 var marqueur = L.marker(event.gps, { icon: iconeCouleur });
 
-                // On ajoute l'action au clic sur le marqueur
                 marqueur.on('click', function(e) {
-                    // On retrouve les données de l'event cliqué (on utilise une astuce simple ici)
                     // Pour simplifier, on remplit la popup avec les infos de l'event actuel de la boucle
-                    // Note : dans une boucle, il faut faire attention au 'scope', mais ici avec var/let c'est ok
                     
                     // Remplissage de la popup personnalisée
                     document.getElementById('popup-title').innerText = this.options.titre_event;
@@ -99,19 +83,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     pop.classList.add('active');
                 });
 
-                // On stocke les infos dans le marqueur pour les retrouver au clic
                 marqueur.options.titre_event = event.nom;
                 marqueur.options.date_event = event.jour;
                 marqueur.options.lieu_event = event.lieu;
                 marqueur.options.image_event = event.image;
                 marqueur.options.couleur_event = event.couleur;
 
-                // On ajoute le marqueur au groupe sur la carte
                 marqueur.addTo(groupeMarqueurs);
             }
         }
     }
-
 
     // --- 4. GESTION DU MENU CATÉGORIES ---
     var boutonMenu = document.getElementById('categories-btn');
@@ -128,17 +109,14 @@ document.addEventListener('DOMContentLoaded', function() {
         lesOptions[j].addEventListener('click', function() {
             var nomCategorie = this.getAttribute('data-category');
             
-            // On change le texte du bouton principal
             boutonMenu.innerText = nomCategorie;
 
-            // On filtre les points sur la carte
             afficherLesPoints(nomCategorie);
 
             // On ferme le menu
             menuListe.classList.remove('active');
         });
     }
-
 
     // --- 5. FERMETURE DE LA POPUP ---
     var boutonFermerPopup = document.querySelector('.close-popup');
@@ -150,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
     maCarte.on('click', function() {
         document.getElementById('custom-popup').classList.remove('active');
     });
-
 
     // --- 6. AU DÉMARRAGE ---
     afficherLesPoints("Tous");
