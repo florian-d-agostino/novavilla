@@ -25,7 +25,7 @@
 
         <div class="theme-toggle-container">
             <label class="theme-switch" for="theme-checkbox">
-                <input type="checkbox" id="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox" aria-label="Basculer entre le thème sombre et clair">
                 <span class="slider">
                     <span class="slider-icon sun"><i class="fa-solid fa-sun"></i></span>
                     <span class="slider-icon moon"><i class="fa-solid fa-moon"></i></span>
@@ -41,7 +41,7 @@
             <a href="./event.html" class="nav-link">Événements</a>
             <a href="./partner.html" class="nav-link active">Partenaires</a>
         </nav>
-        <div class="menu-icon">
+        <div class="menu-icon" role="button" tabindex="0" aria-label="Ouvrir le menu de navigation">
             <i class="fa-solid fa-bars fa-2x"></i>
         </div>
     </header>
@@ -59,7 +59,7 @@
         <!-- CATEGORIES ACTION BAR -->
         <div class="events-top-controls" style="margin-bottom: 10px;">
             <div class="categories-wrapper">
-                <div class="button-categories" id="categories-btn">Catégories</div>
+                <div class="button-categories" id="categories-btn" role="button" tabindex="0" aria-label="Filtrer les partenaires par catégorie" aria-haspopup="listbox">Catégories</div>
                 <div class="categories-menu" id="categories-menu">
                     <div class="category-option selected" data-category="all">Tous</div>
                     <div class="category-option" data-category="Sportif">Sportif</div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="partner-action">
                     <span class="action-text">Réserver vos concerts</span>
-                    <a href="https://www.google.com" target="_blank" class="action-btn">
+                    <a href="https://www.google.com" target="_blank" class="action-btn" aria-label="Réserver vos concerts sur Marseille Arena Jazz (ouvre un nouvel onglet)">
                         Réserver <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="partner-action">
                     <span class="action-text">Acheter vos billets</span>
-                    <a href="https://www.google.com" target="_blank" class="action-btn">
+                    <a href="https://www.google.com" target="_blank" class="action-btn" aria-label="Acheter vos billets sur Open de Tennis Sud (ouvre un nouvel onglet)">
                         Réserver <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="partner-action">
                     <span class="action-text">Billetterie ateliers</span>
-                    <a href="https://www.google.com" target="_blank" class="action-btn">
+                    <a href="https://www.google.com" target="_blank" class="action-btn" aria-label="Accéder à la billetterie ateliers de Family Land Park (ouvre un nouvel onglet)">
                         Réserver <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>
@@ -130,7 +130,7 @@
                 </div>
                 <div class="partner-action">
                     <span class="action-text">Pass 3 Jours officiels</span>
-                    <a href="https://www.google.com" target="_blank" class="action-btn">
+                    <a href="https://www.google.com" target="_blank" class="action-btn" aria-label="Réserver votre pass 3 jours sur Marseille Electronic Fest (ouvre un nouvel onglet)">
                         Réserver <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>
@@ -166,7 +166,7 @@
     <!-- Burger Menu Overlay -->
     <div id="burger-menu" class="burger-overlay">
         <div class="menu-content">
-            <span class="close-menu">&times;</span>
+            <span class="close-menu" role="button" tabindex="0" aria-label="Fermer le menu de navigation">&times;</span>
             <nav class="menu-nav">
                 <a href="../main.html" class="menu-link">Accueil</a>
                 <a href="./news.html" class="menu-link">News</a>

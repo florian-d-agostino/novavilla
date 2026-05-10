@@ -25,7 +25,7 @@
 
         <div class="theme-toggle-container">
             <label class="theme-switch" for="theme-checkbox">
-                <input type="checkbox" id="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox" aria-label="Basculer entre le thème sombre et clair">
                 <span class="slider">
                     <span class="slider-icon sun"><i class="fa-solid fa-sun"></i></span>
                     <span class="slider-icon moon"><i class="fa-solid fa-moon"></i></span>
@@ -41,7 +41,7 @@
             <a href="./event.html" class="nav-link active">Événements</a>
             <a href="./partner.html" class="nav-link">Partenaires</a>
         </nav>
-        <div class="menu-icon">
+        <div class="menu-icon" role="button" tabindex="0" aria-label="Ouvrir le menu de navigation">
             <i class="fa-solid fa-bars fa-2x"></i>
         </div>
     </header>
@@ -50,7 +50,7 @@
     <main class="main-container events-page-container">
         <div class="events-top-controls">
             <div class="categories-wrapper">
-                <div class="button-categories" id="categories-btn">Catégories</div>
+                <div class="button-categories" id="categories-btn" role="button" tabindex="0" aria-label="Filtrer les événements par catégorie" aria-haspopup="listbox">Catégories</div>
                 <div class="categories-menu" id="categories-menu">
                     <div class="category-option" data-category="Tous">Tous</div>
                     <div class="category-option" data-category="Sportif">Sportif</div>
@@ -62,13 +62,13 @@
 
             <section class="action-bar">
                 <div class="date-input-container">
-                    <button class="arrow-btn-prev"><i class="fa-solid fa-circle-arrow-left"></i></button>
+                    <button class="arrow-btn-prev" aria-label="Jour précédent"><i class="fa-solid fa-circle-arrow-left"></i></button>
                     <div class="date-display">
                         <span id="date-text">29 Avril 2026</span>
                     </div>
-                    <button class="arrow-btn-next"><i class="fa-solid fa-circle-arrow-right"></i></button>
+                    <button class="arrow-btn-next" aria-label="Jour suivant"><i class="fa-solid fa-circle-arrow-right"></i></button>
                 </div>
-                <button class="calendar-btn">
+                <button class="calendar-btn" aria-label="Ouvrir le calendrier pour choisir une date">
                     <i class="fa-regular fa-calendar"></i>
                 </button>
             </section>
@@ -76,14 +76,14 @@
 
         <!-- CAROUSEL SECTION -->
         <section class="switcher">
-            <div class="switcher-left" id="prev-event"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="switcher-left" id="prev-event" role="button" tabindex="0" aria-label="Événement précédent"><i class="fa-solid fa-chevron-left"></i></div>
 
             <div class="cards-viewport">
                 <div class="cards-container" id="events-container">
                 </div>
             </div>
 
-            <div class="switcher-right" id="next-event"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="switcher-right" id="next-event" role="button" tabindex="0" aria-label="Événement suivant"><i class="fa-solid fa-chevron-right"></i></div>
         </section>
 
         <!-- GRID HEADER / DIVIDER -->
@@ -126,7 +126,7 @@
     <!-- Burger Menu Overlay -->
     <div id="burger-menu" class="burger-overlay">
         <div class="menu-content">
-            <span class="close-menu">&times;</span>
+            <span class="close-menu" role="button" tabindex="0" aria-label="Fermer le menu de navigation">&times;</span>
             <nav class="menu-nav">
                 <a href="../main.html" class="menu-link">Accueil</a>
                 <a href="./news.html" class="menu-link">News</a>
@@ -140,9 +140,9 @@
     <div id="calendar-modal" class="calendar-overlay">
         <div class="calendar-container">
             <div class="calendar-header">
-                <button id="prev-month"><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="prev-month" aria-label="Mois précédent"><i class="fa-solid fa-chevron-left"></i></button>
                 <h2 id="current-month-year">Avril 2026</h2>
-                <button id="next-month"><i class="fa-solid fa-chevron-right"></i></button>
+                <button id="next-month" aria-label="Mois suivant"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
             <div class="calendar-weekdays">
                 <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>

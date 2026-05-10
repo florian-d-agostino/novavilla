@@ -25,7 +25,7 @@
 
         <div class="theme-toggle-container">
             <label class="theme-switch" for="theme-checkbox">
-                <input type="checkbox" id="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox" aria-label="Basculer entre le thème sombre et clair">
                 <span class="slider">
                     <span class="slider-icon sun"><i class="fa-solid fa-sun"></i></span>
                     <span class="slider-icon moon"><i class="fa-solid fa-moon"></i></span>
@@ -41,7 +41,7 @@
             <a href="./event.html" class="nav-link">Événements</a>
             <a href="./partner.html" class="nav-link">Partenaires</a>
         </nav>
-        <div class="menu-icon">
+        <div class="menu-icon" role="button" tabindex="0" aria-label="Ouvrir le menu de navigation">
             <i class="fa-solid fa-bars fa-2x"></i>
         </div>
     </header>
@@ -92,7 +92,7 @@
             <h3 class="newsletter-title">Newsletter NovaVilla</h3>
             <p class="newsletter-desc">Abonnez-vous à notre lettre d'actualités pour recevoir toutes les programmations, alertes de réservation et annonces exclusives en avant-première.</p>
             <form id="subscribe-form" class="newsletter-form">
-                <input type="email" id="subscribe-email" class="newsletter-input" placeholder="Saisissez votre adresse e-mail" required>
+                <input type="email" id="subscribe-email" class="newsletter-input" placeholder="Saisissez votre adresse e-mail" aria-label="Saisissez votre adresse e-mail pour vous abonner" required>
                 <button type="submit" class="newsletter-btn">S'abonner</button>
             </form>
             <button id="unsubscribe-trigger" class="unsubscribe-trigger-btn">Se désabonner de la newsletter</button>
@@ -127,7 +127,7 @@
     <!-- Burger Menu Overlay -->
     <div id="burger-menu" class="burger-overlay">
         <div class="menu-content">
-            <span class="close-menu">&times;</span>
+            <span class="close-menu" role="button" tabindex="0" aria-label="Fermer le menu de navigation">&times;</span>
             <nav class="menu-nav">
                 <a href="../main.html" class="menu-link">Accueil</a>
                 <a href="./news.html" class="menu-link">News</a>
@@ -140,11 +140,11 @@
     <!-- Unsubscribe Modal Popup -->
     <div id="unsubscribe-modal" class="calendar-overlay">
         <div class="calendar-container" style="max-width: 400px; padding: 30px; position: relative;">
-            <span class="close-modal-btn" id="close-unsubscribe" style="position: absolute; top: 12px; right: 15px; font-size: 1.8rem; cursor: pointer; color: #FF2975; transition: transform 0.2s;">&times;</span>
+            <span class="close-modal-btn" id="close-unsubscribe" role="button" tabindex="0" aria-label="Fermer la fenêtre de désinscription" style="position: absolute; top: 12px; right: 15px; font-size: 1.8rem; cursor: pointer; color: #FF2975; transition: transform 0.2s;">&times;</span>
             <h3 style="font-family: var(--font-family); color: #fff; text-align: center; margin-bottom: 15px; text-transform: uppercase; font-size: 1.1rem; text-shadow: 0 0 10px #FF2975;">Désinscription</h3>
             <p style="font-size: 0.8rem; color: #d4d4d4; text-align: center; margin-bottom: 25px; line-height: 1.4;">Entrez l'adresse e-mail avec laquelle vous êtes inscrit pour confirmer votre désabonnement.</p>
             <form id="unsubscribe-form" style="display: flex; flex-direction: column; gap: 15px;">
-                <input type="email" id="unsubscribe-email" class="newsletter-input" placeholder="Votre adresse e-mail" required style="width: 100%; box-sizing: border-box;">
+                <input type="email" id="unsubscribe-email" class="newsletter-input" placeholder="Votre adresse e-mail" aria-label="Adresse e-mail pour se désabonner" required style="width: 100%; box-sizing: border-box;">
                 <button type="submit" class="newsletter-btn" style="background-color: #FF2975; color: #fff; border: none; padding: 12px 20px; border-radius: 25px; font-weight: bold; cursor: pointer;">Confirmer la désinscription</button>
             </form>
         </div>
