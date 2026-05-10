@@ -12,7 +12,7 @@ html, body {
 }
 
 body {
-  background: url("../retro_stripes.svg") no-repeat center/150% fixed, radial-gradient(circle, #121128, #050415);
+  background: url("../assets/retro_stripes.svg") no-repeat center/150% fixed, radial-gradient(circle, #121128, #050415);
   font-family: "Maqui";
   display: flex;
   flex-direction: column;
