@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const OPENAGENDA_API_KEY = "512a334322fe409fbbfb9da05c29440a";
     const OPENAGENDA_UID = "21769447";
 
+
+
+    // --- MOCKEVENTS IA ---
     const MOCK_EVENTS = [
         {
             title: "Festival des Arts",
@@ -84,6 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let savedDateStr = localStorage.getItem('novaVillaSelectedDate');
     let selectedDate = savedDateStr ? new Date(savedDateStr) : new Date("2026-04-29");
 
+    /**
+     * Initializes the events page. Configures click listeners for category
+     * filters in the controls action bar and starts loading events.
+     */
     async function initPage() {
         if (categoriesBtn) {
             categoriesBtn.addEventListener("click", () => {
@@ -109,6 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
         await loadEventsData();
     }
 
+    /**
+     * Loads real events from the OpenAgenda API and formats them for display.
+     * Automatically falls back to local simulated data (MOCK) on missing API keys or network errors.
+     */
     async function loadEventsData() {
         if (!OPENAGENDA_API_KEY || !OPENAGENDA_UID) {
             useMockData();
@@ -134,11 +145,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /**
+     * Switches the page's event data source to the local offline simulated mock dataset.
+     */
     function useMockData() {
         originalEventsList = MOCK_EVENTS;
         filterAndRender();
     }
 
+    /**
+     * Formats a standard ISO date into a readable French string with the year.
+     * 
+     * @param {string} isoString - Standard ISO date string.
+     * @returns {string} Readable formatted date.
+     */
     function formatDate(isoString) {
         const d = new Date(isoString);
         const day = d.getDate();
@@ -146,6 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${day} ${months[d.getMonth()]} ${d.getFullYear()}`;
     }
 
+    /**
+     * Parses a mock textual date string and converts it to standard YYYY-MM-DD format.
+     * 
+     * @param {string} dateStr - Textual date (e.g., "1 Mai 2026").
+     * @returns {string} Normalized date.
+     */
     function parseMockDate(dateStr) {
         if (!dateStr) return "";
         const parts = dateStr.split(" ");
@@ -162,6 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${year}-${month}-${day}`;
     }
 
+    /**
+     * Filters and maps events to show only those scheduled on or after the selected
+     * date belonging to the active category, then triggers carousel and grid re-renders.
+     */
     function filterAndRender() {
         const targetDate = new Date(selectedDate);
         targetDate.setHours(0, 0, 0, 0);
@@ -247,6 +277,12 @@ document.addEventListener("DOMContentLoaded", () => {
         filterAndRender();
     });
 
+    /**
+     * Generates and injects dynamic HTML code to render event cards
+     * within the event page's carousel container.
+     * 
+     * @param {Array} events - List of filtered events to display.
+     */
     function renderCarousel(events) {
         carouselContainer.innerHTML = "";
         currentIndex = 0;
@@ -284,6 +320,11 @@ document.addEventListener("DOMContentLoaded", () => {
         initSwitcherControls(events.length);
     }
 
+    /**
+     * Initializes and toggles visibility of the event carousel navigation controls.
+     * 
+     * @param {number} length - The total number of events rendered.
+     */
     function initSwitcherControls(length) {
         if (length <= 1) {
             if (prevBtn) prevBtn.style.display = "none";
@@ -295,6 +336,11 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSwitcher(length);
     }
 
+    /**
+     * Performs a 3D CSS translation transform on the carousel to center the active card.
+     * 
+     * @param {number} length - Total count of events inside the carousel.
+     */
     function updateSwitcher(length) {
         const offset = currentIndex * -100;
         carouselContainer.style.transform = `translateX(${offset}%)`;
@@ -325,6 +371,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    /**
+     * Generates and injects the card HTML elements for the main search exploration grid
+     * located at the bottom of the events page.
+     * 
+     * @param {Array} events - List of filtered events to render in the grid.
+     */
     function renderGrid(events) {
         gridContainer.innerHTML = "";
 

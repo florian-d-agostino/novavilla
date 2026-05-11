@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const OPENAGENDA_API_KEY = "512a334322fe409fbbfb9da05c29440a";
     const OPENAGENDA_UID = "21769447";  
 
+
+
+
+
     const MOCK_EVENTS = [
         {
             title: "Festival des Arts",
@@ -40,11 +44,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
+
+
+
+
     let originalEventsList = [];
     let savedDateStr = localStorage.getItem('novaVillaSelectedDate');
     let selectedDate = savedDateStr ? new Date(savedDateStr) : new Date("2026-04-29");
 
 
+    /**
+     * Main entry point to initialize the carousel.
+     * Switches to a static HTML loading if API keys are unconfigured.
+     */
     async function initApp() {
         if (!OPENAGENDA_API_KEY || !OPENAGENDA_UID) {
             console.log("OpenAgenda not configured. Using existing HTML cards.");
@@ -56,6 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
         await loadEventsFromOpenAgenda();
     }
 
+    /**
+     * Loads events from the OpenAgenda API while applying size limits.
+     * In case of network errors, silently falls back to the local simulated mock dataset.
+     */
     async function loadEventsFromOpenAgenda() {
         const url = `https://api.openagenda.com/v2/agendas/${OPENAGENDA_UID}/events?key=${OPENAGENDA_API_KEY}&monolingual=fr&detailed=1&relative%5B0%5D=current&relative%5B1%5D=upcoming&size=100`;
 
@@ -85,6 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /**
+     * Parses a textual date string from mock data and converts it to YYYY-MM-DD format.
+     * 
+     * @param {string} dateStr - Textual date (e.g., "15 Mai 2026").
+     * @returns {string} Normalized date string.
+     */
     function parseMockDate(dateStr) {
         if (!dateStr) return "";
         const parts = dateStr.split(" ");
@@ -101,6 +123,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${year}-${month}-${day}`;
     }
 
+    /**
+     * Filters the complete event list to exclude expired ones relative to the
+     * selected date on the application's calendar.
+     */
     function filterAndDisplayEvents() {
         const targetDate = new Date(selectedDate);
         targetDate.setHours(0, 0, 0, 0);
@@ -143,6 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    /**
+     * Dynamically generates the HTML code to display up to 5 event cards
+     * within the homepage's carousel container.
+     * 
+     * @param {Array} events - List of filtered event objects.
+     */
     function renderEvents(events) {
         container.innerHTML = "";
         
@@ -211,12 +243,20 @@ document.addEventListener("DOMContentLoaded", () => {
         initSwitcherControls();
     }
 
+    /**
+     * Alternative initialization of the homepage carousel based on
+     * pre-existing HTML markup if the API is not active.
+     */
     function initFromHTML() {
         const cards = container.querySelectorAll(".main-card");
         totalCards = cards.length;
         initSwitcherControls();
     }
 
+    /**
+     * Evaluates if navigation controls (left/right arrows) should be
+     * displayed depending on the total count of available cards.
+     */
     function initSwitcherControls() {
         if (totalCards <= 1) {
             if (prevBtn) prevBtn.style.display = "none";
@@ -229,6 +269,10 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSwitcher();
     }
 
+    /**
+     * Applies a 3D CSS translation transform on the carousel container to slide 
+     * the current active card. Updates the navigation controls visual states.
+     */
     function updateSwitcher() {
         const offset = currentIndex * -100;
         container.style.transform = `translateX(${offset}%)`;
@@ -253,6 +297,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let touchStartX = 0;
     container.addEventListener("touchstart", e => touchStartX = e.changedTouches[0].screenX, { passive: true });
+
+
+    // --- TOUCH SWIPE ---
     container.addEventListener("touchend", e => {
         const touchEndX = e.changedTouches[0].screenX;
         if (touchEndX < touchStartX - 50 && currentIndex < totalCards - 1) {
