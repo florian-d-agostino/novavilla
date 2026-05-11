@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoryOptions = document.querySelectorAll(".category-option");
 
     let currentIndex = 0;
-    let filteredEvents = [];
+    let originalEventsList = [];
     let activeCategory = "Tous";
 
     const OPENAGENDA_API_KEY = "512a334322fe409fbbfb9da05c29440a";
-    const OPENAGENDA_UID = "4464467";
+    const OPENAGENDA_UID = "21769447";
 
     const MOCK_EVENTS = [
         {
@@ -81,7 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // Initialize application
+    let savedDateStr = localStorage.getItem('novaVillaSelectedDate');
+    let selectedDate = savedDateStr ? new Date(savedDateStr) : new Date("2026-04-29");
+
     async function initPage() {
         if (categoriesBtn) {
             categoriesBtn.addEventListener("click", () => {
@@ -95,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Bind Category filter clicks
         categoryOptions.forEach(option => {
             option.addEventListener("click", () => {
                 activeCategory = option.getAttribute("data-category");
@@ -105,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Load data from API or fall back to Mock
         await loadEventsData();
     }
 
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const url = `https://api.openagenda.com/v2/agendas/${OPENAGENDA_UID}/events?key=${OPENAGENDA_API_KEY}&monolingual=fr&detailed=1`;
+        const url = `https://api.openagenda.com/v2/agendas/${OPENAGENDA_UID}/events?key=${OPENAGENDA_API_KEY}&monolingual=fr&detailed=1&relative%5B0%5D=current&relative%5B1%5D=upcoming&size=100`;
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error("API Error");
@@ -125,34 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (apiEvents.length === 0) {
                 useMockData();
             } else {
-                // Map OpenAgenda properties to our structure
-                filteredEvents = apiEvents.map(event => {
-                    // Map categories loosely or default to Festival/Concert based on description or title
-                    let cat = "Festival";
-                    const titleText = (event.title?.fr || event.title || "").toLowerCase();
-                    if (titleText.includes("concert") || titleText.includes("jazz") || titleText.includes("musique")) {
-                        cat = "Concert";
-                    } else if (titleText.includes("sport") || titleText.includes("tennis") || titleText.includes("marathon")) {
-                        cat = "Sportif";
-                    } else if (titleText.includes("famille") || titleText.includes("enfant") || titleText.includes("atelier")) {
-                        cat = "Famille";
-                    }
-
-                    // Map correct local image asset if available, else fallback
-                    let img = "../assets/img/festival.jpg";
-                    if (cat === "Concert") img = "../assets/img/concert.jpg";
-                    if (cat === "Sportif") img = "../assets/img/sportif - tennis.jpg";
-                    if (cat === "Famille") img = "../assets/img/famille.jpg";
-
-                    return {
-                        title: event.title?.fr || event.title || "Événement NovaVilla",
-                        category: cat,
-                        date: event.timings?.[0]?.start ? formatDate(event.timings[0].start) : "Prochainement",
-                        address: event.location?.name || event.location?.address || "Marseille",
-                        image: event.image?.square || event.image?.original || img,
-                        bookingUrl: event.registration?.[0]?.value || "#"
-                    };
-                });
+                originalEventsList = apiEvents;
                 filterAndRender();
             }
         } catch (error) {
@@ -162,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function useMockData() {
-        filteredEvents = MOCK_EVENTS;
+        originalEventsList = MOCK_EVENTS;
         filterAndRender();
     }
 
@@ -173,15 +146,106 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${day} ${months[d.getMonth()]} ${d.getFullYear()}`;
     }
 
+    function parseMockDate(dateStr) {
+        if (!dateStr) return "";
+        const parts = dateStr.split(" ");
+        if (parts.length < 3) return "";
+        const day = parts[0].padStart(2, "0");
+        const monthName = parts[1].toLowerCase();
+        const year = parts[2];
+        
+        const months = {
+            "janvier": "01", "février": "02", "mars": "03", "avril": "04", "mai": "05", "juin": "06",
+            "juillet": "07", "août": "08", "septembre": "09", "octobre": "10", "novembre": "11", "décembre": "12"
+        };
+        const month = months[monthName] || "04";
+        return `${year}-${month}-${day}`;
+    }
+
     function filterAndRender() {
-        // Filter events based on selected category
+        const targetDate = new Date(selectedDate);
+        targetDate.setHours(0, 0, 0, 0);
+
+        const dateFilteredEvents = originalEventsList.filter(event => {
+            if (event.timings && event.timings.length > 0) {
+                return event.timings.some(timing => {
+                    const endDate = new Date(timing.end);
+                    endDate.setHours(0, 0, 0, 0);
+                    return endDate >= targetDate;
+                });
+            }
+
+            const dateStr = event.date;
+            if (dateStr) {
+                if (dateStr.includes("-")) {
+                    const eventDate = new Date(dateStr);
+                    eventDate.setHours(0, 0, 0, 0);
+                    return eventDate >= targetDate;
+                } else {
+                    const eventDateStr = parseMockDate(dateStr);
+                    if (eventDateStr) {
+                        const eventDate = new Date(eventDateStr);
+                        eventDate.setHours(0, 0, 0, 0);
+                        return eventDate >= targetDate;
+                    }
+                }
+            }
+            return true;
+        });
+
+        const mappedEvents = dateFilteredEvents.map(event => {
+            let cat = "Festival";
+            const titleText = (event.title?.fr || event.title || "").toLowerCase();
+            if (titleText.includes("concert") || titleText.includes("jazz") || titleText.includes("musique")) {
+                cat = "Concert";
+            } else if (titleText.includes("sport") || titleText.includes("tennis") || titleText.includes("marathon") || titleText.includes("vélo") || titleText.includes("ride") || titleText.includes("challenge")) {
+                cat = "Sportif";
+            } else if (titleText.includes("famille") || titleText.includes("enfant") || titleText.includes("atelier")) {
+                cat = "Famille";
+            }
+
+            let img = "../assets/img/festival.jpg";
+            if (cat === "Concert") img = "../assets/img/concert.jpg";
+            if (cat === "Sportif") img = "../assets/img/sportif - tennis.jpg";
+            if (cat === "Famille") img = "../assets/img/famille.jpg";
+
+            let realImg = img;
+            if (event.image) {
+                if (typeof event.image === "string") {
+                    realImg = event.image;
+                } else if (event.image.base && event.image.filename) {
+                    realImg = event.image.base + event.image.filename;
+                } else if (event.image.square) {
+                    realImg = event.image.square;
+                } else if (event.image.original) {
+                    realImg = event.image.original;
+                }
+            }
+
+            const dateStr = event.dateRange || (event.timings?.[0]?.start ? formatDate(event.timings[0].start) : "Prochainement");
+
+            return {
+                title: event.title?.fr || event.title || "Événement NovaVilla",
+                category: event.category || cat,
+                date: event.date || dateStr,
+                address: event.location?.name || event.location?.address || event.address || "Marseille",
+                image: realImg,
+                bookingUrl: event.registration?.[0]?.value || event.bookingUrl || "#"
+            };
+        });
+
         const eventsToShow = activeCategory === "Tous" 
-            ? filteredEvents 
-            : filteredEvents.filter(e => e.category === activeCategory);
+            ? mappedEvents 
+            : mappedEvents.filter(e => e.category === activeCategory);
 
         renderCarousel(eventsToShow);
         renderGrid(eventsToShow);
     }
+
+    document.addEventListener("novaVillaDateChanged", (e) => {
+        selectedDate = e.detail;
+        filterAndRender();
+    });
 
     function renderCarousel(events) {
         carouselContainer.innerHTML = "";
@@ -192,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="main-card" style="display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; color:inherit;">
                     <div>
                         <h3>Aucun événement</h3>
-                        <p style="font-size:0.8rem; margin-top:5px;">Il n'y a aucun événement planifié dans cette catégorie.</p>
+                        <p style="font-size:0.8rem; margin-top:5px;">Il n'y a aucun événement planifié à partir de cette date dans cette catégorie.</p>
                     </div>
                 </div>
             `;
@@ -206,10 +270,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="main-card">
                     <div class="card-header">${event.title}</div>
                     <div class="card-body">
-                        <img src="${event.image}" alt="${event.title}" onerror="this.src='../assets/map.png';">
+                        <img src="${event.image}" alt="${event.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.src='../assets/map.png';">
                     </div>
                     <div class="card-footer">
-                        <span><i class="fa-solid fa-location-dot"></i> ${event.address}</span>
+                        ${event.address}
                         <div class="button-booking" onclick="window.open('${event.bookingUrl}', '_blank')">Reservation</div>
                     </div>
                 </div>

@@ -6,17 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VillaNova</title>
 
-    <link rel="stylesheet" href="../sass/style_main.css">
+    <link rel="stylesheet" href="./sass/style_main.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+    <div class="background-stripes"></div>
+
+
+
+
+
+
 
     <!-- HEADER -->
     <header class="top-header">
         <div class="logo-container">
-            <img src="../assets/NovaVilla.svg" alt="Logo NovaVilla">
+            <img src="./assets/NovaVilla.svg" alt="Logo NovaVilla">
         </div>
 
         <h1 class="header-title">Nova Villa</h1>
@@ -44,12 +51,19 @@
         </div>
     </header>
 
-    <!-- INTRO CONTENT DIVIDER -->
-    <div class="all-events-divider" style="margin: 20px auto 0 auto; max-width: 1200px; padding: 0 20px; box-sizing: border-box;">
+
+
+
+    <!-- INTRO -->
+    <div class="all-events-divider">
         <span class="divider-line"></span>
-        <h2>Découvrir la Villa</h2>
+        <h2>Découvrir les événements</h2>
         <span class="divider-line"></span>
     </div>
+
+
+
+
 
     <!-- MAIN CONTENT -->
     <main class="main-container">
@@ -123,7 +137,7 @@
                         </div>
 
                         <div class="popup-body">
-                            <img id="popup-img" src="../assets/event_placeholder.jpg" alt="Event">
+                            <img id="popup-img" src="./assets/map.png" alt="Event">
                         </div>
 
                         <div class="popup-footer">
@@ -156,6 +170,11 @@
 
     </main>
 
+
+
+
+
+
     <!-- FOOTER / BOTTOM NAV -->
     <footer class="bottom-nav">
         <div class="footer-curved"></div>
@@ -180,6 +199,15 @@
         </div>
     </footer>
 
+
+
+
+
+                    <!-- ===== EVENT JS ===== -->
+
+
+
+
     <!-- Burger Menu Overlay -->
     <div id="burger-menu" class="burger-overlay">
         <div class="menu-content">
@@ -192,6 +220,9 @@
             </nav>
         </div>
     </div>
+
+
+
 
     <!-- Calendar Modal -->
     <div id="calendar-modal" class="calendar-overlay">
@@ -210,10 +241,10 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="../js/map.js"></script>
-    <script src="../js/switcher.js"></script>
-    <script src="../js/menu.js"></script>
-    <script src="../js/calendar.js"></script>
+    <script src="./js/map.js"></script>
+    <script src="./js/switcher.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="./js/calendar.js"></script>
 </body>
 
 </html>

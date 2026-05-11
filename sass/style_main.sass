@@ -32,20 +32,36 @@ $app-width: 400px
     margin: 0
     padding: 0
 
-html, body
+html
     width: 100%
     overflow-x: hidden
     margin: 0
     padding: 0
+    background: radial-gradient(circle, $color-dark-blue, $color-deep-dark-blue)
 
 body
-    background: url('../assets/retro_stripes.svg') no-repeat center / 150% fixed, radial-gradient(circle, $color-dark-blue, $color-deep-dark-blue)
+    width: 100%
+    overflow-x: hidden
+    margin: 0
+    padding: 0
+    background: transparent
     font-family: $font-family
     display: flex
     flex-direction: column
     align-items: center
     min-height: 100vh
     position: relative
+
+.background-stripes
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: url('../assets/img/retro_stripes.svg') no-repeat center / 150%
+    z-index: -3
+    pointer-events: none
+    opacity: 0.9
 
     &::before
         content: ""
@@ -859,9 +875,8 @@ body
 
     .main-container
         max-width: 1200px
-        flex-direction: row 
-        justify-content: space-between
-        align-items: flex-start
+        flex-direction: column
+        align-items: center
         gap: 40px
         padding: 40px
 
@@ -876,19 +891,25 @@ body
                 margin: 0 auto
         
         .desktop-left
-            flex: 0 0 45% 
+            width: 100%
+            max-width: 800px
             display: flex
             flex-direction: column
             gap: 20px
 
+            .switcher
+                .cards-viewport
+                    height: 380px
+
         .desktop-right
-            flex: 1 
+            width: 100%
+            max-width: 1100px
             display: flex
             flex-direction: column
-            height: 600px 
+            height: 550px 
             
             .title-map
-                margin: 0 0 10px 0
+                margin: 0 auto 15px auto
                 
             .map-container
                 height: 100%
@@ -933,6 +954,8 @@ body
     margin: 40px auto 25px auto
     width: 100%
     max-width: 1200px
+    padding: 0 20px
+    box-sizing: border-box
 
     .divider-line
         flex: 1

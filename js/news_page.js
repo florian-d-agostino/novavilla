@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeUnsubscribe = document.getElementById("close-unsubscribe");
     const unsubscribeForm = document.getElementById("unsubscribe-form");
 
-    // News Data containing mock items with project category tags and high-quality local images
     const MOCK_NEWS = [
         {
             id: 1,
@@ -59,18 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // Initialize Page logic
+
     function initNewsPage() {
         renderNews();
 
-        // Bind checkboxes clicks to filter news
+
         categoryCheckboxes.forEach(checkbox => {
             checkbox.addEventListener("change", () => {
                 renderNews();
             });
         });
 
-        // Initialize newsletter subscription logic
+
         if (subscribeForm) {
             subscribeForm.addEventListener("submit", (e) => {
                 e.preventDefault();
@@ -84,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Initialize Unsubscribe Modal triggers
+
         if (unsubscribeTrigger) {
             unsubscribeTrigger.addEventListener("click", () => {
                 unsubscribeModal.classList.add("active");
@@ -119,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Dynamic rendering of news matching selected checkboxes
+
     function renderNews() {
         newsContainer.innerHTML = "";
 
@@ -172,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Newsletter storage logic in JSON format inside LocalStorage
+
     function getStoredSubscribers() {
         const stored = localStorage.getItem("novavilla_newsletter_subscribers");
         return stored ? JSON.parse(stored) : [];

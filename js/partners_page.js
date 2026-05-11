@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoryOptions = document.querySelectorAll(".category-option");
     const partnerItems = document.querySelectorAll(".partner-item");
 
-    // Toggle categories menu dropdown
+
     if (categoriesBtn && categoriesMenu) {
         categoriesBtn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Dynamic filtering logic
+
     categoryOptions.forEach(option => {
         option.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 categoriesBtn.textContent = option.textContent;
             }
 
-            // Filter partners
+
             partnerItems.forEach(item => {
                 const partnerTag = item.querySelector(".partner-tag").textContent.trim();
 
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // Close menu
+
             categoriesMenu.classList.remove("active");
         });
     });

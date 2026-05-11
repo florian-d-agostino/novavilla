@@ -1,150 +1,186 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // --- 1. RÉCUPÉRATION DES ÉLÉMENTS HTML ---
-    const boutonCalendrier = document.querySelector('.calendar-btn');
-    const modaleCalendrier = document.getElementById('calendar-modal');
-    const grilleDesJours = document.getElementById('calendar-days');
-    const texteMoisAnnee = document.getElementById('current-month-year');
-    const boutonMoisPrecedent = document.getElementById('prev-month');
-    const boutonMoisSuivant = document.getElementById('next-month');
-    const zoneDateTexte = document.getElementById('date-text');
-    const boutonJourPrecedent = document.querySelector('.arrow-btn-prev');
-    const boutonJourSuivant = document.querySelector('.arrow-btn-next');
 
-    // --- 2. GESTION DES DATES (MÉMOIRE) ---
-    const nomsDesMois = [
+
+
+
+
+
+    // --- 1. HTML ELEMENT RETRIEVAL ---
+    const calendarBtn = document.querySelector('.calendar-btn');
+    const calendarModal = document.getElementById('calendar-modal');
+    const daysGrid = document.getElementById('calendar-days');
+    const monthYearText = document.getElementById('current-month-year');
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
+    const dateTextZone = document.getElementById('date-text');
+    const prevDayBtn = document.querySelector('.arrow-btn-prev');
+    const nextDayBtn = document.querySelector('.arrow-btn-next');
+
+
+
+
+
+
+    // --- 2. DATE MANAGEMENT (LOCAL STORAGE) ---
+    const monthNames = [
         "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
     ];
 
-    let dateSauvegardee = localStorage.getItem('novaVillaSelectedDate');
+    let savedDate = localStorage.getItem('novaVillaSelectedDate');
     
-    let dateChoisie;
-    if (dateSauvegardee) {
-        dateChoisie = new Date(dateSauvegardee);
+    let selectedDate;
+    if (savedDate) {
+        selectedDate = new Date(savedDate);
     } else {
-        dateChoisie = new Date();
+        selectedDate = new Date("2026-04-29");
     }
 
-    let dateAffichageMois = new Date(dateChoisie);
+    let displayMonthDate = new Date(selectedDate);
 
-    // --- 3. FONCTIONS POUR L'AFFICHAGE ---
 
-    function rafraichirTexteBarreDate() {
-        let jour = dateChoisie.getDate();
-        let mois = nomsDesMois[dateChoisie.getMonth()].toLowerCase();
-        let annee = dateChoisie.getFullYear();
 
-        zoneDateTexte.innerText = jour + " " + mois + " " + annee;
+
+
+    // --- 3. DISPLAY FUNCTIONS ---
+
+    function refreshDateBarText() {
+        let day = selectedDate.getDate();
+        let month = monthNames[selectedDate.getMonth()].toLowerCase();
+        let year = selectedDate.getFullYear();
+
+        dateTextZone.innerText = day + " " + month + " " + year;
     }
 
-    function dessinerCalendrier() {
-        grilleDesJours.innerHTML = '';
+    function renderCalendar() {
+        daysGrid.innerHTML = '';
         
-        let annee = dateAffichageMois.getFullYear();
-        let mois = dateAffichageMois.getMonth();
+        let year = displayMonthDate.getFullYear();
+        let month = displayMonthDate.getMonth();
         
-        texteMoisAnnee.innerText = nomsDesMois[mois] + " " + annee;
+        monthYearText.innerText = monthNames[month] + " " + year;
 
-        let premierJourDuMois = new Date(annee, mois, 1).getDay();
-        let decalage;
-        if (premierJourDuMois === 0) {
-            decalage = 6;
+        let firstDayOfMonth = new Date(year, month, 1).getDay();
+        let offset;
+        if (firstDayOfMonth === 0) {
+            offset = 6;
         } else {
-            decalage = premierJourDuMois - 1;
+            offset = firstDayOfMonth - 1;
         }
 
-        let dernierJourDuMois = new Date(annee, mois + 1, 0).getDate();
+        let lastDayOfMonth = new Date(year, month + 1, 0).getDate();
 
-        for (let i = 0; i < decalage; i++) {
-            let caseVide = document.createElement('div');
-            caseVide.classList.add('day');
-            caseVide.classList.add('empty');
-            grilleDesJours.appendChild(caseVide);
+        for (let i = 0; i < offset; i++) {
+            let emptyCell = document.createElement('div');
+            emptyCell.classList.add('day');
+            emptyCell.classList.add('empty');
+            daysGrid.appendChild(emptyCell);
         }
 
-        let aujourdhui = new Date();
+        let today = new Date();
 
-        for (let i = 1; i <= dernierJourDuMois; i++) {
-            let caseJour = document.createElement('div');
-            caseJour.classList.add('day');
-            caseJour.innerText = i;
+        for (let i = 1; i <= lastDayOfMonth; i++) {
+            let dayCell = document.createElement('div');
+            dayCell.classList.add('day');
+            dayCell.innerText = i;
 
-            if (i === aujourdhui.getDate() && mois === aujourdhui.getMonth() && annee === aujourdhui.getFullYear()) {
-                caseJour.classList.add('today');
+            if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dayCell.classList.add('today');
             }
 
-            if (i === dateChoisie.getDate() && mois === dateChoisie.getMonth() && annee === dateChoisie.getFullYear()) {
-                caseJour.classList.add('selected');
+            if (i === selectedDate.getDate() && month === selectedDate.getMonth() && year === selectedDate.getFullYear()) {
+                dayCell.classList.add('selected');
             }
 
-            caseJour.addEventListener('click', function() {
-                dateChoisie = new Date(annee, mois, i);
+            dayCell.addEventListener('click', function() {
+                selectedDate = new Date(year, month, i);
                 
-                localStorage.setItem('novaVillaSelectedDate', dateChoisie.toISOString());
+                localStorage.setItem('novaVillaSelectedDate', selectedDate.toISOString());
                 
-                rafraichirTexteBarreDate();
-                fermerLeCalendrier();
+                refreshDateBarText();
+                closeCalendar();
+                document.dispatchEvent(new CustomEvent('novaVillaDateChanged', { detail: selectedDate }));
             });
 
-            grilleDesJours.appendChild(caseJour);
+            daysGrid.appendChild(dayCell);
         }
     }
 
-    // --- 4. GESTION DE LA MODALE ---
 
-    function ouvrirLeCalendrier() {
-        modaleCalendrier.style.display = 'flex';
+
+
+
+
+
+    // --- 4. MODAL MANAGEMENT ---
+
+    function openCalendar() {
+        calendarModal.style.display = 'flex';
         setTimeout(function() {
-            modaleCalendrier.classList.add('active');
+            calendarModal.classList.add('active');
         }, 10);
-        dessinerCalendrier();
+        renderCalendar();
     }
 
-    function fermerLeCalendrier() {
-        modaleCalendrier.classList.remove('active');
+    function closeCalendar() {
+        calendarModal.classList.remove('active');
         setTimeout(function() {
-            modaleCalendrier.style.display = 'none';
+            calendarModal.style.display = 'none';
         }, 300);
     }
 
-    // --- 5. ÉCOUTE DES CLICS (INTERACTION) ---
 
-    boutonCalendrier.addEventListener('click', ouvrirLeCalendrier);
+
+
+
+
+
+    // --- 5. EVENT LISTENERS (INTERACTION) ---
+
+    calendarBtn.addEventListener('click', openCalendar);
     
-    modaleCalendrier.addEventListener('click', function(evenement) {
-        if (evenement.target === modaleCalendrier) {
-            fermerLeCalendrier();
+    calendarModal.addEventListener('click', function(event) {
+        if (event.target === calendarModal) {
+            closeCalendar();
         }
     });
 
-    boutonMoisPrecedent.addEventListener('click', function() {
-        dateAffichageMois.setMonth(dateAffichageMois.getMonth() - 1);
-        dessinerCalendrier();
+    prevMonthBtn.addEventListener('click', function() {
+        displayMonthDate.setMonth(displayMonthDate.getMonth() - 1);
+        renderCalendar();
     });
 
-    boutonMoisSuivant.addEventListener('click', function() {
-        dateAffichageMois.setMonth(dateAffichageMois.getMonth() + 1);
-        dessinerCalendrier();
+    nextMonthBtn.addEventListener('click', function() {
+        displayMonthDate.setMonth(displayMonthDate.getMonth() + 1);
+        renderCalendar();
     });
 
-    boutonJourPrecedent.addEventListener('click', function() {
-        dateChoisie.setDate(dateChoisie.getDate() - 1);
-        localStorage.setItem('novaVillaSelectedDate', dateChoisie.toISOString());
-        rafraichirTexteBarreDate();
-        dateAffichageMois = new Date(dateChoisie);
-        dessinerCalendrier();
+    prevDayBtn.addEventListener('click', function() {
+        selectedDate.setDate(selectedDate.getDate() - 1);
+        localStorage.setItem('novaVillaSelectedDate', selectedDate.toISOString());
+        refreshDateBarText();
+        displayMonthDate = new Date(selectedDate);
+        renderCalendar();
+        document.dispatchEvent(new CustomEvent('novaVillaDateChanged', { detail: selectedDate }));
     });
 
-    boutonJourSuivant.addEventListener('click', function() {
-        dateChoisie.setDate(dateChoisie.getDate() + 1);
-        localStorage.setItem('novaVillaSelectedDate', dateChoisie.toISOString());
-        rafraichirTexteBarreDate();
-        dateAffichageMois = new Date(dateChoisie);
-        dessinerCalendrier();
+    nextDayBtn.addEventListener('click', function() {
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        localStorage.setItem('novaVillaSelectedDate', selectedDate.toISOString());
+        refreshDateBarText();
+        displayMonthDate = new Date(selectedDate);
+        renderCalendar();
+        document.dispatchEvent(new CustomEvent('novaVillaDateChanged', { detail: selectedDate }));
     });
 
-    // --- 6. INITIALISATION AU DÉMARRAGE ---
-    rafraichirTexteBarreDate();
 
+
+
+
+
+    // --- 6. INITIALIZATION ON START ---
+    refreshDateBarText();
+    setTimeout(() => {
+        document.dispatchEvent(new CustomEvent('novaVillaDateChanged', { detail: selectedDate }));
+    }, 100);
 });
