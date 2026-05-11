@@ -4,19 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.querySelector(".close-menu");
     const menuLinks = document.querySelectorAll(".menu-link");
 
-    /**
-     * Opens the fullscreen mobile overlay navigation menu
-     * and disables body scrolling.
-     */
     function openMenu() {
         overlay.classList.add("active");
         document.body.style.overflow = "hidden";
     }
 
-    /**
-     * Closes the fullscreen mobile overlay navigation menu
-     * and re-enables body scrolling.
-     */
     function closeMenu() {
         overlay.classList.remove("active");
         document.body.style.overflow = "auto";
@@ -39,12 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const themeCheckbox = document.getElementById("theme-checkbox");
 
-    /**
-     * Dynamic logo switcher supporting path prefix detection.
-     * Swaps the SVG logo file depending on light or dark mode.
-     * 
-     * @param {boolean} isLight - True if light theme is active, false for dark.
-     */
     function updateLogo(isLight) {
         const logoImg = document.querySelector(".logo-container img");
         if (!logoImg) return;

@@ -72,13 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     var markerGroup = L.layerGroup().addTo(myMap);
 
-    /**
-     * Clears existing markers and generates new colored map pins
-     * for each event matching the chosen category.
-     * Also binds a click event to open the customized popup window.
-     * 
-     * @param {string} chosenCategory - The name of the category to filter ("Tous", "Concert", etc.).
-     */
     function displayPoints(chosenCategory) {
         
         markerGroup.clearLayers();
@@ -158,13 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('custom-popup').classList.remove('active');
     });
 
-    /**
-     * Parses a mock date string (e.g. "1 mai")
-     * and converts it to a usable standard YYYY-MM-DD ISO format.
-     * 
-     * @param {string} dateStr - The mock date string to parse.
-     * @returns {string} Normalized date in YYYY-MM-DD format or empty string.
-     */
     function parseMockDate(dateStr) {
         if (!dateStr) return "";
         var parts = dateStr.trim().split(" ");
@@ -181,11 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return year + "-" + month + "-" + day;
     }
 
-    /**
-     * Filters OpenAgenda events based on the active category
-     * and selected date (excludes events ending before this date),
-     * then updates the map display.
-     */
     function filterAndDisplayPoints() {
         var targetDate = new Date(selectedFilterDate);
         targetDate.setHours(0, 0, 0, 0);
@@ -228,11 +209,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- ON START WITH DYNAMIC LOADING ---
-    /**
-     * Initializes the geographical map. Tries to fetch real events
-     * from the OpenAgenda API and format them. If an API error occurs or it's unconfigured,
-     * loads offline mock local data (MOCK_EVENTS).
-     */
     async function initMapEvents() {
         if (!OPENAGENDA_API_KEY || !OPENAGENDA_UID) {
             rawApiEvents = MOCK_EVENTS.map(function(ev) {
@@ -354,12 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- DATE FORMATTING FR --  
-    /**
-     * Formats a standard ISO date into friendly French text (e.g., "11 Mai").
-     * 
-     * @param {string} isoString - Date in ISO format.
-     * @returns {string} Human-readable formatted date.
-     */
     function formatDate(isoString) {
         const d = new Date(isoString);
         const day = d.getDate();

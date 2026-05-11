@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // --- HTML ELEMENT RETRIEVAL ---
+    // --- 1. HTML ELEMENT RETRIEVAL ---
     const calendarBtn = document.querySelector('.calendar-btn');
     const calendarModal = document.getElementById('calendar-modal');
     const daysGrid = document.getElementById('calendar-days');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // --- DATE MANAGEMENT ---
+    // --- 2. DATE MANAGEMENT ---
     const monthNames = [
         "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
@@ -42,12 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // --- DISPLAY FUNCTIONS ---
+    // --- 3. DISPLAY FUNCTIONS ---
 
-    /**
-     * Formats the currently selectedDate and displays it in the date text element 
-     * on the main navigation action bar (e.g., "11 mai 2026").
-     */
     function refreshDateBarText() {
         let day = selectedDate.getDate();
         let month = monthNames[selectedDate.getMonth()].toLowerCase();
@@ -56,11 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         dateTextZone.innerText = day + " " + month + " " + year;
     }
 
-    /**
-     * Renders all the days in the current displayMonthDate month.
-     * Computes the alignment padding offset and dynamically creates DOM elements
-     * representing calendar day cells, highlighted options, and today markers.
-     */
     function renderCalendar() {
         daysGrid.innerHTML = '';
         
@@ -121,12 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // --- MODAL MANAGEMENT ---
+    // --- 4. MODAL MANAGEMENT ---
 
-    /**
-     * Opens the customized calendar dialog modal with a smooth fade-in animation,
-     * triggering a calendar render.
-     */
     function openCalendar() {
         calendarModal.style.display = 'flex';
         setTimeout(function() {
@@ -135,9 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCalendar();
     }
 
-    /**
-     * Closes the calendar modal with a fade-out transition.
-     */
     function closeCalendar() {
         calendarModal.classList.remove('active');
         setTimeout(function() {
@@ -151,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // --- EVENT LISTENERS ---
+    // --- 5. EVENT LISTENERS ---
 
     calendarBtn.addEventListener('click', openCalendar);
     
@@ -194,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // --- INITIALIZATION ON START ---
+    // --- 6. INITIALIZATION ON START ---
     refreshDateBarText();
     setTimeout(() => {
         document.dispatchEvent(new CustomEvent('novaVillaDateChanged', { detail: selectedDate }));

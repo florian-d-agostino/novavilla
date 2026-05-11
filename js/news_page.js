@@ -66,10 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // --- FUNCTIONS ---
-    /**
-     * Initializes the news page. Configures all newsletter subscription and unsubscription 
-     * form listeners, modal popups, and renders the news card listing grid.
-     */
     function initNewsPage() {
         renderNews();
 
@@ -129,10 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /**
-     * Filters news cards based on the thematic categories checked by the user
-     * and inserts the formatted HTML articles into the news container grid.
-     */
     function renderNews() {
         newsContainer.innerHTML = "";
 
@@ -185,30 +177,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /**
-     * Retrieves the newsletter subscriber list from the browser's localStorage.
-     * 
-     * @returns {Array<string>} List of registered email addresses.
-     */
     function getStoredSubscribers() {
         const stored = localStorage.getItem("novavilla_newsletter_subscribers");
         return stored ? JSON.parse(stored) : [];
     }
 
-    /**
-     * Persists the updated subscriber email list back into localStorage.
-     * 
-     * @param {Array<string>} list - Array of email addresses to save.
-     */
     function saveSubscribers(list) {
         localStorage.setItem("novavilla_newsletter_subscribers", JSON.stringify(list));
     }
 
-    /**
-     * Registers a new subscriber email address if not already present in the system.
-     * 
-     * @param {string} email - The user's email address.
-     */
     function subscribeEmail(email) {
         const subscribers = getStoredSubscribers();
 
@@ -222,11 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Inscription réussie ! Vous recevrez désormais les actualités NovaVilla par e-mail.");
     }
 
-    /**
-     * Removes a subscriber email address from the newsletter system database.
-     * 
-     * @param {string} email - The email address to unsubscribe.
-     */
     function unsubscribeEmail(email) {
         const subscribers = getStoredSubscribers();
 
